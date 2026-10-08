@@ -42,7 +42,6 @@ fun RegisterScreen(
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-
     Column(
         modifier = modifier
             .fillMaxSize()
