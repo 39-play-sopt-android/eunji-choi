@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">Play Sopt</string>
+
+    <!-- 공통 -->
+    <string name="auth_email_label">이메일 주소</string>
+    <string name="auth_email_placeholder">abc@email.com</string>
+    <string name="auth_password_label">비밀번호</string>
+    <string name="auth_password_placeholder">6자 이상의 비밀번호</string>
+
+    <!-- 에러 -->
+    <string name="email_error">올바른 이메일을 입력해주세요.</string>
+    <string name="password_error">비밀번호는 6자 이상 입력해주세요.</string>
+    <string name="password_confirm_error">비밀번호와 동일하게 입력해주세요.</string>
+
+    <!-- 로그인 -->
+    <string name="login_title">이메일로 로그인하기</string>
+    <string name="login_button">로그인</string>
+    <string name="login_no_account">아직 계정이 없으신가요?</string>
+    <string name="login_go_register">회원가입하기</string>
+    <string name="login_success">로그인에 성공했습니다</string>
+    <string name="login_failure">이메일 또는 비밀번호가 올바르지 않아요.</string>
+
+    <!-- 회원가입 -->
+    <string name="register_title">이메일로 회원가입</string>
+    <string name="register_name_label">이름</string>
+    <string name="register_name_placeholder">홍길동</string>
+    <string name="register_password_confirm_label">비밀번호 확인</string>
+    <string name="register_button">회원가입</string>
+    <string name="register_success">회원가입에 성공했습니다</string>
 </resources>
