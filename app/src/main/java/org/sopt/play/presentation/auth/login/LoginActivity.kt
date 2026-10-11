@@ -16,13 +16,14 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import org.sopt.play.presentation.main.MainActivity
 import org.sopt.play.R
+import org.sopt.play.core.common.extension.toast
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 import org.sopt.play.presentation.auth.register.RegisterActivity
 import org.sopt.play.presentation.auth.util.AuthValidator
 import org.sopt.play.presentation.auth.util.EMAIL_KEY
 import org.sopt.play.presentation.auth.util.PASSWORD_KEY
+import org.sopt.play.presentation.main.MainActivity
 
 class LoginActivity : ComponentActivity() {
     private var resultEmail = ""
@@ -97,7 +98,7 @@ class LoginActivity : ComponentActivity() {
             return
         }
 
-        Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
+        this.toast(getString(R.string.login_success))
 
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

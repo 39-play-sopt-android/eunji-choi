@@ -2,7 +2,6 @@ package org.sopt.play.presentation.auth.register
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import org.sopt.play.R
+import org.sopt.play.core.common.extension.toast
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 import org.sopt.play.presentation.auth.util.AuthValidator
 import org.sopt.play.presentation.auth.util.EMAIL_KEY
@@ -38,7 +38,10 @@ class RegisterActivity : ComponentActivity() {
                     nameState.text.isNotBlank() &&
                             AuthValidator.isValidEmail(emailState.text.toString()) &&
                             AuthValidator.isValidPassword(password) &&
-                            AuthValidator.isValidPasswordConfirm(password, passwordConfirmState.text.toString())
+                            AuthValidator.isValidPasswordConfirm(
+                                password,
+                                passwordConfirmState.text.toString()
+                            )
                 }
             }
 
@@ -69,7 +72,8 @@ class RegisterActivity : ComponentActivity() {
         emailText: String,
         passwordText: String,
     ) {
-        Toast.makeText(this, getString(R.string.register_success), Toast.LENGTH_SHORT).show()
+
+        this.toast(getString(R.string.register_success))
 
         val intent = Intent()
             .putExtra(EMAIL_KEY, emailText)
