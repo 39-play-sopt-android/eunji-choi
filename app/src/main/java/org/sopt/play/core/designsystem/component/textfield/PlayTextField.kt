@@ -99,6 +99,7 @@ fun PlayTextField(
                             text = placeholder,
                             style = textStyle,
                             color = PlaySoptTheme.colors.gray2,
+                            maxLines = 1,
                         )
                     }
 
