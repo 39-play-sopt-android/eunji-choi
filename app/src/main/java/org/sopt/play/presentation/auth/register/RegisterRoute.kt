@@ -18,7 +18,7 @@ import org.sopt.play.presentation.auth.util.AuthValidator
 @Composable
 fun RegisterRoute(
     paddingValues: PaddingValues,
-    navigateToLogin: () -> Unit,
+    navigateToLogin: (email: String, password: String) -> Unit,
 ) {
     val context = LocalContext.current
     val nameState = rememberTextFieldState()
@@ -71,7 +71,10 @@ fun RegisterRoute(
         registerEnabled = registerEnabled,
         onRegisterClick = {
             context.toast(registerSuccessMessage)
-            navigateToLogin()
+            navigateToLogin(
+                emailState.text.toString(),
+                passwordState.text.toString(),
+            )
         },
         modifier = Modifier
             .padding(paddingValues)
