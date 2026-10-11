@@ -10,12 +10,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import org.sopt.play.R
 import org.sopt.play.core.common.extension.toast
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
@@ -53,11 +55,23 @@ class LoginActivity : ComponentActivity() {
                 }
             }
 
+            val isEmailError by remember {
+                derivedStateOf { AuthValidator.emailError(emailState.text.toString()) }
+            }
+            val emailErrorMessage = isEmailError?.let { stringResource(it) }
+
+            val isPasswordError by remember {
+                derivedStateOf { AuthValidator.passwordError(passwordState.text.toString()) }
+            }
+            val passwordErrorMessage = isPasswordError?.let { stringResource(it) }
+
             PlaySoptTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     LoginScreen(
                         emailState = emailState,
                         passwordState = passwordState,
+                        emailErrorMessage = emailErrorMessage,
+                        passwordErrorMessage = passwordErrorMessage,
                         loginEnabled = loginEnabled,
                         onLoginClick = {
                             onLoginClick(
@@ -65,17 +79,17 @@ class LoginActivity : ComponentActivity() {
                                 passwordText = passwordState.text.toString()
                             )
                         },
-                        onRegisterClick = ::onRegisterClick,
+                        onRegisterClick = {
+                            emailState.clearText()
+                            passwordState.clearText()
+
+                            registerLauncher.launch(Intent(this, RegisterActivity::class.java))
+                        },
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
         }
-    }
-
-    private fun onRegisterClick() {
-        val intent = Intent(this, RegisterActivity::class.java)
-        registerLauncher.launch(intent)
     }
 
     @StringRes

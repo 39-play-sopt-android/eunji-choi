@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,12 +29,13 @@ import org.sopt.play.core.common.extension.noRippleClickable
 import org.sopt.play.core.designsystem.component.button.PlayButton
 import org.sopt.play.core.designsystem.component.textfield.PlayTextField
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
-import org.sopt.play.presentation.auth.util.AuthValidator
 
 @Composable
 fun LoginScreen(
     emailState: TextFieldState,
     passwordState: TextFieldState,
+    emailErrorMessage: String?,
+    passwordErrorMessage: String?,
     loginEnabled: Boolean,
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
@@ -66,8 +66,7 @@ fun LoginScreen(
             label = stringResource(R.string.auth_email_label),
             state = emailState,
             placeholder = stringResource(R.string.auth_email_placeholder),
-            errorMessage = AuthValidator.emailError(emailState.text.toString())
-                ?.let { stringResource(it) },
+            errorMessage = emailErrorMessage,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Email
@@ -84,8 +83,7 @@ fun LoginScreen(
             state = passwordState,
             isPassword = true,
             placeholder = stringResource(R.string.auth_password_placeholder),
-            errorMessage = AuthValidator.passwordError(passwordState.text.toString())
-                ?.let { stringResource(it) },
+            errorMessage = passwordErrorMessage,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Password
@@ -123,8 +121,6 @@ fun LoginScreen(
                 style = PlaySoptTheme.typography.m14,
                 color = PlaySoptTheme.colors.gray6,
                 modifier = Modifier.noRippleClickable {
-                    emailState.clearText()
-                    passwordState.clearText()
                     onRegisterClick()
                 },
             )
@@ -139,6 +135,8 @@ private fun LoginScreenPreview() {
         LoginScreen(
             emailState = rememberTextFieldState(),
             passwordState = rememberTextFieldState(),
+            emailErrorMessage = stringResource(R.string.email_error),
+            passwordErrorMessage = null,
             loginEnabled = true,
             onLoginClick = {},
             onRegisterClick = {},

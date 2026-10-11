@@ -27,7 +27,6 @@ import org.sopt.play.R
 import org.sopt.play.core.designsystem.component.button.PlayButton
 import org.sopt.play.core.designsystem.component.textfield.PlayTextField
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
-import org.sopt.play.presentation.auth.util.AuthValidator
 
 @Composable
 fun RegisterScreen(
@@ -35,6 +34,9 @@ fun RegisterScreen(
     emailState: TextFieldState,
     passwordState: TextFieldState,
     passwordConfirmState: TextFieldState,
+    emailErrorMessage: String?,
+    passwordErrorMessage: String?,
+    passwordConfirmErrorMessage: String?,
     registerEnabled: Boolean,
     onRegisterClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -81,8 +83,7 @@ fun RegisterScreen(
             label = stringResource(R.string.auth_email_label),
             state = emailState,
             placeholder = stringResource(R.string.auth_email_placeholder),
-            errorMessage = AuthValidator.emailError(emailState.text.toString())
-                ?.let { stringResource(it) },
+            errorMessage = emailErrorMessage,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Email
@@ -99,8 +100,7 @@ fun RegisterScreen(
             state = passwordState,
             isPassword = true,
             placeholder = stringResource(R.string.auth_password_placeholder),
-            errorMessage = AuthValidator.passwordError(passwordState.text.toString())
-                ?.let { stringResource(it) },
+            errorMessage = passwordErrorMessage,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Password
@@ -117,8 +117,7 @@ fun RegisterScreen(
             state = passwordConfirmState,
             isPassword = true,
             placeholder = stringResource(R.string.auth_password_placeholder),
-            errorMessage = AuthValidator.passwordConfirmError(passwordState.text.toString(), passwordConfirmState.text.toString())
-                ?.let { stringResource(it) },
+            errorMessage = passwordConfirmErrorMessage,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Password
@@ -148,6 +147,9 @@ private fun RegisterScreenPreview() {
             emailState = rememberTextFieldState(),
             passwordState = rememberTextFieldState(),
             passwordConfirmState = rememberTextFieldState(),
+            emailErrorMessage = stringResource(R.string.email_error),
+            passwordErrorMessage = null,
+            passwordConfirmErrorMessage = null,
             registerEnabled = true,
             onRegisterClick = {},
         )
