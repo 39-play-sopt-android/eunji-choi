@@ -33,6 +33,15 @@
     <string name="home_item_discount_rate">%d%%</string>
     <string name="topbar_title">PLAY SOPT</string>
 
+    <!-- 홈 메뉴 -->
+    <string name="home_menu_double_reward">2배적립</string>
+    <string name="home_menu_home">홈</string>
+    <string name="home_menu_selected">셀렉티드</string>
+    <string name="home_menu_brand">브랜드</string>
+    <string name="home_menu_beauty">뷰티</string>
+    <string name="home_tab_life">라이프</string>
+    <string name="home_tab_ranking">랭킹</string>
+
     <!-- 홈 카테고리 -->
     <string name="home_category_whole">전체</string>
     <string name="home_category_top">상의</string>

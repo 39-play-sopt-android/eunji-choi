@@ -22,7 +22,7 @@ import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @Composable
 fun TabMenu(
-    tab: String,
+    menu: String,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
@@ -53,7 +53,7 @@ fun TabMenu(
         }
 
         Text(
-            text = tab,
+            text = menu,
             style = PlaySoptTheme.typography.m18,
             color = contentColor
         )
@@ -69,13 +69,13 @@ private fun TabMenuPreview() {
                 .padding(all = 20.dp)
         ) {
             TabMenu(
-                tab = stringResource(R.string.home_category_bag),
+                menu = stringResource(R.string.home_menu_home),
                 isSelected = true,
                 onClick = {}
             )
 
             TabMenu(
-                tab = stringResource(R.string.home_category_bag),
+                menu = stringResource(R.string.home_menu_brand),
                 isSelected = false,
                 onClick = {}
             )
