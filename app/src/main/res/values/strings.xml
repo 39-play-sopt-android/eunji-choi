@@ -39,8 +39,8 @@
     <string name="home_menu_selected">셀렉티드</string>
     <string name="home_menu_brand">브랜드</string>
     <string name="home_menu_beauty">뷰티</string>
-    <string name="home_tab_life">라이프</string>
-    <string name="home_tab_ranking">랭킹</string>
+    <string name="home_menu_life">라이프</string>
+    <string name="home_menu_ranking">랭킹</string>
 
     <!-- 홈 카테고리 -->
     <string name="home_category_whole">전체</string>
