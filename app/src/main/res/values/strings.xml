@@ -27,4 +27,21 @@
     <string name="register_password_confirm_label">비밀번호 확인</string>
     <string name="register_button">회원가입</string>
     <string name="register_success">회원가입에 성공했습니다</string>
+
+    <!-- 홈 -->
+    <string name="home_recommend_title">%s님을 위한 추천 아이템</string>
+    <string name="home_item_discount_rate">%d%%</string>
+    <string name="topbar_title">PLAY SOPT</string>
+
+    <!-- 홈 카테고리 -->
+    <string name="home_category_whole">전체</string>
+    <string name="home_category_top">상의</string>
+    <string name="home_category_pants">팬츠</string>
+    <string name="home_category_onepiece">원피스</string>
+    <string name="home_category_outer">아우터</string>
+    <string name="home_category_skirt">스커트</string>
+    <string name="home_category_shoes">슈즈</string>
+    <string name="home_category_bag">가방</string>
+    <string name="home_category_innerwear">이너웨어/잠옷</string>
+    <string name="home_category_phone_deco">폰꾸미기</string>
 </resources>
