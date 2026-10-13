@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.R
+import org.sopt.play.core.common.extension.noRippleClickable
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @Composable
@@ -20,6 +21,7 @@ fun Chip(
     category: String,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
 ) {
     val textColor = if (isSelected) PlaySoptTheme.colors.white
     else PlaySoptTheme.colors.gray5
@@ -34,15 +36,16 @@ fun Chip(
         style = PlaySoptTheme.typography.m14,
         color = textColor,
         modifier = modifier
+            .noRippleClickable(onClick = onClick)
             .background(
                 color = backgroundColor,
                 shape = shape
             )
             .then(
-                if (isSelected) Modifier
+                if (!isSelected) Modifier
                     .border(
                         width = 1.dp,
-                        color = PlaySoptTheme.colors.gray5,
+                        color = PlaySoptTheme.colors.gray2,
                         shape = shape
                     )
                 else Modifier
@@ -63,11 +66,13 @@ private fun ChipPreview() {
             Chip(
                 category = stringResource(R.string.home_category_whole),
                 isSelected = true,
+                onClick = {},
             )
 
             Chip(
                 category = stringResource(R.string.home_category_shoes),
                 isSelected = false,
+                onClick = {},
             )
         }
     }
