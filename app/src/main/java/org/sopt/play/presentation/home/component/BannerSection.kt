@@ -47,6 +47,7 @@ fun BannerSection(
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 placeholder = ColorPainter(PlaySoptTheme.colors.gray2),
+                error = ColorPainter(PlaySoptTheme.colors.gray2),
                 modifier = Modifier
                     .fillParentMaxWidth()
                     .aspectRatio(328f / 195f),
