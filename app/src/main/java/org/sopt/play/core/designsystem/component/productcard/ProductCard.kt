@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,12 +25,12 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import org.sopt.play.R
 import org.sopt.play.core.common.extension.noRippleClickable
-import org.sopt.play.core.designsystem.component.productcard.model.ProductCardItemModel
+import org.sopt.play.core.designsystem.component.productcard.model.ProductModel
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @Composable
 fun ProductCard(
-    item: ProductCardItemModel,
+    item: ProductModel,
     isFavorite: Boolean,
     modifier: Modifier = Modifier,
     onFavoriteClick: () -> Unit,
@@ -48,6 +49,8 @@ fun ProductCard(
                 model = item.imgUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
+                placeholder = ColorPainter(PlaySoptTheme.colors.gray2),
+                error = ColorPainter(PlaySoptTheme.colors.gray2),
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(4f / 5f),
@@ -118,7 +121,7 @@ fun ProductCard(
 @Composable
 private fun ProductCardPreview() {
     PlaySoptTheme {
-        val dummyItem = ProductCardItemModel(
+        val dummyItem = ProductModel(
             imgUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_autumn.png",
             storeName = "슬로우앤드",
             caption = "[\uD83C\uDF41가을/3기장선택!] made. 모먼트 투커버 올데이슬랙스 (+숏/베이직/롱ver) - 4 size",
