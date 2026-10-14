@@ -56,9 +56,9 @@ fun HomeProductCard(
                 tint = favoriteColor,
                 modifier = Modifier
                     .align(alignment = Alignment.BottomEnd)
+                    .noRippleClickable(onClick = onFavoriteClick)
                     .padding(all = 8.dp)
                     .size(24.dp)
-                    .noRippleClickable(onClick = onFavoriteClick)
             )
         }
 
