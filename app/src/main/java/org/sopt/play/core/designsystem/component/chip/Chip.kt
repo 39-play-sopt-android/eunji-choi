@@ -29,6 +29,9 @@ fun Chip(
     val backgroundColor = if (isSelected) PlaySoptTheme.colors.gray5
     else PlaySoptTheme.colors.white
 
+    val borderColor = if (isSelected) PlaySoptTheme.colors.gray5
+    else PlaySoptTheme.colors.gray2
+
     val shape = RoundedCornerShape(6.dp)
 
     Text(
@@ -41,14 +44,10 @@ fun Chip(
                 color = backgroundColor,
                 shape = shape
             )
-            .then(
-                if (!isSelected) Modifier
-                    .border(
-                        width = 1.dp,
-                        color = PlaySoptTheme.colors.gray2,
-                        shape = shape
-                    )
-                else Modifier
+            .border(
+                width = 1.dp,
+                color = borderColor,
+                shape = shape
             )
             .padding(horizontal = 12.dp, vertical = 8.dp)
     )
