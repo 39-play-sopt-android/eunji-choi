@@ -1,8 +1,9 @@
 package org.sopt.play.presentation.home.component
 
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -17,13 +18,10 @@ fun MenuSection(
     onMenuClick: (HomeMenu) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyRow(
-        modifier = modifier.fillMaxWidth()
+    Row(
+        modifier = modifier.horizontalScroll(rememberScrollState())
     ) {
-        items(
-            items = HomeMenu.entries,
-            key = { it.name },
-        ) { menu ->
+        HomeMenu.entries.forEach { menu ->
             TabMenu(
                 menu = stringResource(menu.title),
                 isSelected = selectedMenu == menu,
