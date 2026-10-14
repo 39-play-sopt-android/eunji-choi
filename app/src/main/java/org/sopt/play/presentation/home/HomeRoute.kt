@@ -6,7 +6,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import org.sopt.play.data.dummy.BannerDummyData
 import org.sopt.play.data.dummy.ProductDummyData
+import org.sopt.play.data.dummy.UserDummyData
 
 @Composable
 fun HomeRoute(
@@ -17,8 +19,9 @@ fun HomeRoute(
     }
 
     HomeScreen(
-        user = "김솝트",
+        userName = UserDummyData.NAME,
         paddingValues = paddingValues,
+        banners = BannerDummyData.banners,
         products = ProductDummyData.products,
         favorites = favorites,
         onFavoriteClick = { product ->

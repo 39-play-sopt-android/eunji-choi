@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,19 +24,21 @@ import org.sopt.play.R
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 import org.sopt.play.data.dummy.BannerDummyData
 import org.sopt.play.data.dummy.ProductDummyData
+import org.sopt.play.presentation.home.component.HomeTopBar
+import org.sopt.play.presentation.home.model.BannerModel
+import org.sopt.play.presentation.home.model.HomeCategory
+import org.sopt.play.presentation.home.model.HomeMenu
+import org.sopt.play.presentation.home.model.ProductModel
 import org.sopt.play.presentation.home.section.HomeBannerSection
 import org.sopt.play.presentation.home.section.HomeCategorySection
 import org.sopt.play.presentation.home.section.HomeMenuSection
 import org.sopt.play.presentation.home.section.HomeProductRow
-import org.sopt.play.presentation.home.component.HomeTopBar
-import org.sopt.play.presentation.home.model.HomeCategory
-import org.sopt.play.presentation.home.model.HomeMenu
-import org.sopt.play.presentation.home.model.ProductModel
 
 @Composable
 fun HomeScreen(
-    user: String,
+    userName: String,
     paddingValues: PaddingValues,
+    banners: List<BannerModel>,
     products: List<ProductModel>,
     favorites: Set<String>,
     onFavoriteClick: (ProductModel) -> Unit,
@@ -59,7 +61,8 @@ fun HomeScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = PlaySoptTheme.colors.white)
+                .background(color = PlaySoptTheme.colors.white),
+            contentPadding = PaddingValues(bottom = 96.dp),
         ) {
             item {
                 HomeMenuSection(
@@ -70,7 +73,7 @@ fun HomeScreen(
 
             item {
                 HomeBannerSection(
-                    banners = BannerDummyData.banners,
+                    banners = banners,
                 )
             }
 
@@ -78,7 +81,7 @@ fun HomeScreen(
 
             item {
                 Text(
-                    text = stringResource(R.string.home_recommend_title, user),
+                    text = stringResource(R.string.home_recommend_title, userName),
                     style = PlaySoptTheme.typography.m18,
                     color = PlaySoptTheme.colors.black,
                     modifier = Modifier.padding(horizontal = 16.dp)
@@ -96,20 +99,22 @@ fun HomeScreen(
 
             item { Spacer(modifier = Modifier.height(20.dp)) }
 
-            items(
+            itemsIndexed(
                 items = productRows,
-                key = { rowItems -> rowItems.first().id },
-                contentType = { "product_row" },
-            ) { rowItems ->
+                key = { _, rowItems -> rowItems.first().id },
+                contentType = { _, _ -> "product_row" },
+            ) { index, rowItems ->
                 HomeProductRow(
                     rowItems = rowItems,
                     favorites = favorites,
                     onFavoriteClick = onFavoriteClick,
-                    modifier = Modifier.padding(bottom = 15.dp),
+                    modifier = if (index < productRows.lastIndex) {
+                        Modifier.padding(bottom = 15.dp)
+                    } else {
+                        Modifier
+                    },
                 )
             }
-
-            item { Spacer(modifier = Modifier.height(96.dp)) }
         }
     }
 }
@@ -119,8 +124,9 @@ fun HomeScreen(
 private fun HomeScreenPreview() {
     PlaySoptTheme {
         HomeScreen(
-            user = "김솝트",
+            userName = "김솝트",
             paddingValues = PaddingValues(),
+            banners = BannerDummyData.banners,
             products = ProductDummyData.products,
             favorites = setOf(ProductDummyData.products.first().id),
             onFavoriteClick = {},
