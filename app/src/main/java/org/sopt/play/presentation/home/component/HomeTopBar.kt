@@ -1,8 +1,8 @@
 package org.sopt.play.presentation.home.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,25 +27,23 @@ fun HomeTopBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = PlaySoptTheme.colors.white),
+            .background(color = PlaySoptTheme.colors.white)
+            .padding(start = 16.dp, end = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
             text = stringResource(R.string.topbar_title),
             style = PlaySoptTheme.typography.b28,
             color = PlaySoptTheme.colors.black,
             modifier = Modifier
-                .padding(start = 16.dp, top = 7.dp, bottom = 7.dp)
         )
-
-        Spacer(modifier = Modifier.weight(1f))
 
         Icon(
             painter = painterResource(id = R.drawable.ic_search_28),
             contentDescription = null,
             tint = PlaySoptTheme.colors.black,
             modifier = Modifier
-                .padding(all = 6.dp)
                 .noRippleClickable(onClick = onSearchClick)
                 .padding(10.dp)
                 .size(28.dp)
