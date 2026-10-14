@@ -49,7 +49,7 @@ fun HomeScreen(
     val productRows = remember(products) { products.chunked(2) }
 
     Column(
-        modifier = modifier
+        modifier = modifier.padding(paddingValues)
     ) {
         TopBar(
             modifier = Modifier.fillMaxWidth(),
@@ -60,7 +60,6 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = PlaySoptTheme.colors.white)
-                .padding(paddingValues)
         ) {
             item {
                 MenuSection(

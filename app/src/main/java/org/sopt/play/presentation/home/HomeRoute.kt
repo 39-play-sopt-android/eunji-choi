@@ -12,14 +12,19 @@ import org.sopt.play.data.dummy.ProductDummyData
 fun HomeRoute(
     paddingValues: PaddingValues,
 ) {
-    var favorites by remember { mutableStateOf(setOf<String>())}
+    var favorites by remember {
+        mutableStateOf(setOf(ProductDummyData.products.first().id))
+    }
 
     HomeScreen(
         user = "김솝트",
-        paddingValues = PaddingValues(),
+        paddingValues = paddingValues,
         products = ProductDummyData.products,
-        favorites = setOf(ProductDummyData.products.first().id),
-        onFavoriteClick = {},
+        favorites = favorites,
+        onFavoriteClick = { product ->
+            favorites = if (product.id in favorites) favorites - product.id
+            else favorites + product.id
+        },
         onSearchClick = {},
     )
 }
