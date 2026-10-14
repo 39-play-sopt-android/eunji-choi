@@ -1,4 +1,4 @@
-package org.sopt.play.core.designsystem.component.tabmenu
+package org.sopt.play.presentation.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,11 +21,11 @@ import org.sopt.play.core.common.extension.noRippleClickable
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @Composable
-fun TabMenu(
+fun HomeTabMenu(
     menu: String,
     isSelected: Boolean,
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val textColor = if (isSelected) PlaySoptTheme.colors.black
     else PlaySoptTheme.colors.gray3
@@ -59,19 +59,19 @@ fun TabMenu(
 
 @Preview(showBackground = true)
 @Composable
-private fun TabMenuPreview() {
+private fun HomeTabMenuPreview() {
     PlaySoptTheme {
         Row(
             modifier = Modifier
                 .padding(all = 20.dp)
         ) {
-            TabMenu(
+            HomeTabMenu(
                 menu = stringResource(R.string.home_menu_home),
                 isSelected = true,
                 onClick = {}
             )
 
-            TabMenu(
+            HomeTabMenu(
                 menu = stringResource(R.string.home_menu_brand),
                 isSelected = false,
                 onClick = {}

@@ -1,4 +1,4 @@
-package org.sopt.play.presentation.home.component
+package org.sopt.play.presentation.home.section
 
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +17,7 @@ import org.sopt.play.data.dummy.BannerDummyData
 import org.sopt.play.presentation.home.model.BannerModel
 
 @Composable
-fun BannerSection(
+fun HomeBannerSection(
     banners: List<BannerModel>,
     modifier: Modifier = Modifier,
 ) {
@@ -41,7 +41,7 @@ fun BannerSection(
             val banner = banners[index % contentsSize]
 
             PlayAsyncImage(
-                imageUrl = banner.bannerUrl,
+                imageUrl = banner.imageUrl,
                 modifier = Modifier
                     .fillParentMaxWidth()
                     .aspectRatio(328f / 195f),
@@ -52,9 +52,9 @@ fun BannerSection(
 
 @Preview(showBackground = true)
 @Composable
-private fun BannerSectionPreview() {
+private fun HomeBannerSectionPreview() {
     PlaySoptTheme {
-        BannerSection(
+        HomeBannerSection(
             banners = BannerDummyData.banners,
             modifier = Modifier.fillMaxWidth()
         )

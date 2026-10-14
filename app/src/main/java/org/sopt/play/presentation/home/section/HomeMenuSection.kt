@@ -1,4 +1,4 @@
-package org.sopt.play.presentation.home.component
+package org.sopt.play.presentation.home.section
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Row
@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import org.sopt.play.core.designsystem.component.tabmenu.TabMenu
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
+import org.sopt.play.presentation.home.component.HomeTabMenu
 import org.sopt.play.presentation.home.model.HomeMenu
 
 @Composable
-fun MenuSection(
+fun HomeMenuSection(
     selectedMenu: HomeMenu,
     onMenuClick: (HomeMenu) -> Unit,
     modifier: Modifier = Modifier,
@@ -22,7 +22,7 @@ fun MenuSection(
         modifier = modifier.horizontalScroll(rememberScrollState())
     ) {
         HomeMenu.entries.forEach { menu ->
-            TabMenu(
+            HomeTabMenu(
                 menu = stringResource(menu.title),
                 isSelected = selectedMenu == menu,
                 onClick = { onMenuClick(menu) }
@@ -33,9 +33,9 @@ fun MenuSection(
 
 @Preview(showBackground = true)
 @Composable
-private fun MenuSectionPreview() {
+private fun HomeMenuSectionPreview() {
     PlaySoptTheme {
-        MenuSection(
+        HomeMenuSection(
             selectedMenu = HomeMenu.HOME,
             onMenuClick = {},
             modifier = Modifier.fillMaxWidth()

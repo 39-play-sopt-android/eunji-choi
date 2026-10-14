@@ -1,4 +1,4 @@
-package org.sopt.play.presentation.home.component
+package org.sopt.play.presentation.home.section
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -8,13 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.sopt.play.core.designsystem.component.productcard.ProductCard
-import org.sopt.play.core.designsystem.component.productcard.model.ProductModel
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 import org.sopt.play.data.dummy.ProductDummyData
+import org.sopt.play.presentation.home.component.HomeProductCard
+import org.sopt.play.presentation.home.model.ProductModel
 
 @Composable
-fun ProductRow(
+fun HomeProductRow(
     rowItems: List<ProductModel>,
     favorites: Set<String>,
     onFavoriteClick: (ProductModel) -> Unit,
@@ -25,7 +25,7 @@ fun ProductRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         rowItems.forEach { product ->
-            ProductCard(
+            HomeProductCard(
                 item = product,
                 isFavorite = product.id in favorites,
                 onFavoriteClick = { onFavoriteClick(product) },
@@ -38,9 +38,9 @@ fun ProductRow(
 
 @Preview(showBackground = true)
 @Composable
-private fun ProductRowPreview() {
+private fun HomeProductRowPreview() {
     PlaySoptTheme {
-        ProductRow(
+        HomeProductRow(
             rowItems = ProductDummyData.products.take(2),
             favorites = setOf(ProductDummyData.products.first().id),
             onFavoriteClick = {},

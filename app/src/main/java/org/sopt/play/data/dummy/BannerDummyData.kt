@@ -4,8 +4,8 @@ import org.sopt.play.presentation.home.model.BannerModel
 
 object BannerDummyData {
     val banners = listOf(
-        BannerModel(bannerUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_banner_waiting.png"),
-        BannerModel(bannerUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_banner_western.png"),
-        BannerModel(bannerUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_banner_spring.png"),
+        BannerModel(imageUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_banner_waiting.png"),
+        BannerModel(imageUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_banner_western.png"),
+        BannerModel(imageUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_banner_spring.png"),
     )
 }

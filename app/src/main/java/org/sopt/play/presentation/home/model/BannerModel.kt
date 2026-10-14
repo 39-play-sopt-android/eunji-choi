@@ -5,6 +5,6 @@ import java.util.UUID
 
 @Immutable
 data class BannerModel(
-    val bannerUrl: String,
+    val imageUrl: String,
     val id: String = UUID.randomUUID().toString()
 )

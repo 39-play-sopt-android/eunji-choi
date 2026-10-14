@@ -1,4 +1,4 @@
-package org.sopt.play.core.designsystem.component.productcard
+package org.sopt.play.presentation.home.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,15 +23,15 @@ import androidx.compose.ui.unit.dp
 import org.sopt.play.R
 import org.sopt.play.core.common.extension.noRippleClickable
 import org.sopt.play.core.designsystem.component.asyncimage.PlayAsyncImage
-import org.sopt.play.core.designsystem.component.productcard.model.ProductModel
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
+import org.sopt.play.presentation.home.model.ProductModel
 
 @Composable
-fun ProductCard(
+fun HomeProductCard(
     item: ProductModel,
     isFavorite: Boolean,
-    modifier: Modifier = Modifier,
     onFavoriteClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val favoriteIcon = if (isFavorite) R.drawable.ic_favorite_filled_24
     else R.drawable.ic_favorite_unfilled_24
@@ -44,7 +44,7 @@ fun ProductCard(
     ) {
         Box {
             PlayAsyncImage(
-                imageUrl = item.imgUrl,
+                imageUrl = item.imageUrl,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(4f / 5f),
@@ -113,10 +113,10 @@ fun ProductCard(
 
 @Preview(showBackground = true, widthDp = 360)
 @Composable
-private fun ProductCardPreview() {
+private fun HomeProductCardPreview() {
     PlaySoptTheme {
         val dummyItem = ProductModel(
-            imgUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_autumn.png",
+            imageUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_autumn.png",
             storeName = "슬로우앤드",
             caption = "[\uD83C\uDF41가을/3기장선택!] made. 모먼트 투커버 올데이슬랙스 (+숏/베이직/롱ver) - 4 size",
             discountRate = 50,
@@ -128,7 +128,7 @@ private fun ProductCardPreview() {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            ProductCard(
+            HomeProductCard(
                 item = dummyItem,
                 isFavorite = true,
                 modifier = Modifier
@@ -136,7 +136,7 @@ private fun ProductCardPreview() {
                 onFavoriteClick = {}
             )
 
-            ProductCard(
+            HomeProductCard(
                 item = dummyItem,
                 isFavorite = false,
                 modifier = Modifier

@@ -1,11 +1,11 @@
-package org.sopt.play.core.designsystem.component.productcard.model
+package org.sopt.play.presentation.home.model
 
 import androidx.compose.runtime.Immutable
 import java.util.UUID
 
 @Immutable
 data class ProductModel(
-    val imgUrl: String,
+    val imageUrl: String,
     val storeName: String,
     val caption: String,
     val discountRate: Int,

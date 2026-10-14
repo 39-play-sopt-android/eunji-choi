@@ -21,17 +21,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.R
-import org.sopt.play.core.designsystem.component.productcard.model.ProductModel
-import org.sopt.play.core.designsystem.component.topbar.TopBar
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 import org.sopt.play.data.dummy.BannerDummyData
 import org.sopt.play.data.dummy.ProductDummyData
-import org.sopt.play.presentation.home.component.BannerSection
-import org.sopt.play.presentation.home.component.CategorySection
-import org.sopt.play.presentation.home.component.MenuSection
-import org.sopt.play.presentation.home.component.ProductRow
+import org.sopt.play.presentation.home.section.HomeBannerSection
+import org.sopt.play.presentation.home.section.HomeCategorySection
+import org.sopt.play.presentation.home.section.HomeMenuSection
+import org.sopt.play.presentation.home.section.HomeProductRow
+import org.sopt.play.presentation.home.component.HomeTopBar
 import org.sopt.play.presentation.home.model.HomeCategory
 import org.sopt.play.presentation.home.model.HomeMenu
+import org.sopt.play.presentation.home.model.ProductModel
 
 @Composable
 fun HomeScreen(
@@ -51,7 +51,7 @@ fun HomeScreen(
     Column(
         modifier = modifier.padding(paddingValues)
     ) {
-        TopBar(
+        HomeTopBar(
             modifier = Modifier.fillMaxWidth(),
             onSearchClick = onSearchClick,
         )
@@ -62,14 +62,14 @@ fun HomeScreen(
                 .background(color = PlaySoptTheme.colors.white)
         ) {
             item {
-                MenuSection(
+                HomeMenuSection(
                     selectedMenu = selectedMenu,
                     onMenuClick = { selectedMenu = it },
                 )
             }
 
             item {
-                BannerSection(
+                HomeBannerSection(
                     banners = BannerDummyData.banners,
                 )
             }
@@ -88,7 +88,7 @@ fun HomeScreen(
             item { Spacer(modifier = Modifier.height(12.dp)) }
 
             item {
-                CategorySection(
+                HomeCategorySection(
                     selectedCategory = selectedCategory,
                     onCategoryClick = { selectedCategory = it },
                 )
@@ -101,7 +101,7 @@ fun HomeScreen(
                 key = { rowItems -> rowItems.first().id },
                 contentType = { "product_row" },
             ) { rowItems ->
-                ProductRow(
+                HomeProductRow(
                     rowItems = rowItems,
                     favorites = favorites,
                     onFavoriteClick = onFavoriteClick,

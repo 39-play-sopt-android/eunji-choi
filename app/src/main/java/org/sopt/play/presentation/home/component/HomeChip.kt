@@ -1,4 +1,4 @@
-package org.sopt.play.core.designsystem.component.chip
+package org.sopt.play.presentation.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,11 +17,11 @@ import org.sopt.play.core.common.extension.noRippleClickable
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @Composable
-fun Chip(
+fun HomeChip(
     category: String,
     isSelected: Boolean,
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val textColor = if (isSelected) PlaySoptTheme.colors.white
     else PlaySoptTheme.colors.gray5
@@ -55,20 +55,20 @@ fun Chip(
 
 @Preview(showBackground = true)
 @Composable
-private fun ChipPreview() {
+private fun HomeChipPreview() {
     PlaySoptTheme {
         Row(
             modifier = Modifier
                 .padding(all = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Chip(
+            HomeChip(
                 category = stringResource(R.string.home_category_whole),
                 isSelected = true,
                 onClick = {},
             )
 
-            Chip(
+            HomeChip(
                 category = stringResource(R.string.home_category_shoes),
                 isSelected = false,
                 onClick = {},

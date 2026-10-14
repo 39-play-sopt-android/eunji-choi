@@ -1,4 +1,4 @@
-package org.sopt.play.core.designsystem.component.topbar
+package org.sopt.play.presentation.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -20,9 +20,9 @@ import org.sopt.play.core.common.extension.noRippleClickable
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @Composable
-fun TopBar(
-    modifier: Modifier = Modifier,
+fun HomeTopBar(
     onSearchClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
@@ -55,9 +55,9 @@ fun TopBar(
 
 @Preview(showBackground = true)
 @Composable
-private fun TopBarPreview() {
+private fun HomeTopBarPreview() {
     PlaySoptTheme {
-        TopBar(
+        HomeTopBar(
             modifier = Modifier.fillMaxWidth(),
             onSearchClick = {}
         )
