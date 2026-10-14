@@ -53,4 +53,9 @@
     <string name="home_category_bag">가방</string>
     <string name="home_category_innerwear">이너웨어/잠옷</string>
     <string name="home_category_phone_deco">폰꾸미기</string>
+
+    <!-- 바텀 네비게이션 -->
+    <string name="main_tab_home">홈</string>
+    <string name="main_tab_like">찜</string>
+    <string name="main_tab_mypage">마이페이지</string>
 </resources>
