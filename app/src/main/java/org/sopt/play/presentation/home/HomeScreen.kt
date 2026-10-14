@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,7 +29,7 @@ import org.sopt.play.data.dummy.ProductDummyData
 import org.sopt.play.presentation.home.component.BannerSection
 import org.sopt.play.presentation.home.component.CategorySection
 import org.sopt.play.presentation.home.component.MenuSection
-import org.sopt.play.presentation.home.component.ProductGrid
+import org.sopt.play.presentation.home.component.ProductRow
 import org.sopt.play.presentation.home.model.HomeCategory
 import org.sopt.play.presentation.home.model.HomeMenu
 
@@ -43,11 +44,13 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
 ) {
     var selectedMenu by remember { mutableStateOf(HomeMenu.HOME) }
-    var selectedCategory by remember { mutableStateOf(HomeCategory.WHOLE)}
+    var selectedCategory by remember { mutableStateOf(HomeCategory.WHOLE) }
+
+    val productRows = remember(products) { products.chunked(2) }
 
     Column(
         modifier = modifier
-    ){
+    ) {
         TopBar(
             modifier = Modifier.fillMaxWidth(),
             onSearchClick = onSearchClick,
@@ -94,12 +97,16 @@ fun HomeScreen(
 
             item { Spacer(modifier = Modifier.height(20.dp)) }
 
-            item {
-                ProductGrid(
-                    products = products,
+            items(
+                items = productRows,
+                key = { rowItems -> rowItems.first().id },
+                contentType = { "product_row" },
+            ) { rowItems ->
+                ProductRow(
+                    rowItems = rowItems,
                     favorites = favorites,
                     onFavoriteClick = onFavoriteClick,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.padding(bottom = 15.dp),
                 )
             }
 
