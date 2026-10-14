@@ -25,6 +25,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +48,8 @@ fun PlayTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onKeyboardAction: KeyboardActionHandler? = null,
 ) {
+    val isEmpty by remember(state) { derivedStateOf { state.text.isEmpty() } }
+
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
 
@@ -94,7 +97,7 @@ fun PlayTextField(
                         )
                         .padding(all = 16.dp),
                 ) {
-                    if (state.text.isEmpty()) {
+                    if (isEmpty) {
                         Text(
                             text = placeholder,
                             style = textStyle,
