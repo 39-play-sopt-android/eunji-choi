@@ -9,11 +9,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import org.sopt.play.core.designsystem.component.asyncimage.PlayAsyncImage
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 import org.sopt.play.data.dummy.BannerDummyData
 import org.sopt.play.presentation.home.model.BannerModel
@@ -42,12 +40,8 @@ fun BannerSection(
         items(infiniteCount) { index ->
             val banner = banners[index % contentsSize]
 
-            AsyncImage(
-                model = banner.bannerUrl,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                placeholder = ColorPainter(PlaySoptTheme.colors.gray2),
-                error = ColorPainter(PlaySoptTheme.colors.gray2),
+            PlayAsyncImage(
+                imageUrl = banner.bannerUrl,
                 modifier = Modifier
                     .fillParentMaxWidth()
                     .aspectRatio(328f / 195f),
