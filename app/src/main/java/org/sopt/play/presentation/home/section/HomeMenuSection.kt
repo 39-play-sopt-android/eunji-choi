@@ -1,0 +1,47 @@
+package org.sopt.play.presentation.home.section
+
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import org.sopt.play.core.common.extension.blockPagerSwipe
+import org.sopt.play.core.designsystem.theme.PlaySoptTheme
+import org.sopt.play.presentation.home.component.HomeTabMenu
+import org.sopt.play.presentation.home.model.HomeMenu
+
+@Composable
+fun HomeMenuSection(
+    selectedMenu: HomeMenu,
+    onMenuClick: (HomeMenu) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .blockPagerSwipe()
+            .horizontalScroll(rememberScrollState())
+    ) {
+        HomeMenu.entries.forEach { menu ->
+            HomeTabMenu(
+                menu = stringResource(menu.title),
+                isSelected = selectedMenu == menu,
+                onClick = { onMenuClick(menu) }
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeMenuSectionPreview() {
+    PlaySoptTheme {
+        HomeMenuSection(
+            selectedMenu = HomeMenu.HOME,
+            onMenuClick = {},
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}

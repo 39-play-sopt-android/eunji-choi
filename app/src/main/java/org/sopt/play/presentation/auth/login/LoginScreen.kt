@@ -8,11 +8,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -47,9 +50,9 @@ fun LoginScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(
-                color = PlaySoptTheme.colors.white
-            )
+            .background(color = PlaySoptTheme.colors.white)
+            .imePadding()
+            .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp)
     ) {
         Spacer(modifier = Modifier.height(60.dp))
@@ -131,6 +134,22 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 private fun LoginScreenPreview() {
+    PlaySoptTheme {
+        LoginScreen(
+            emailState = rememberTextFieldState(),
+            passwordState = rememberTextFieldState(),
+            emailErrorMessage = stringResource(R.string.email_error),
+            passwordErrorMessage = null,
+            loginEnabled = true,
+            onLoginClick = {},
+            onRegisterClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, fontScale = 1.5f)
+@Composable
+private fun LoginScreenLargeFontPreview() {
     PlaySoptTheme {
         LoginScreen(
             emailState = rememberTextFieldState(),

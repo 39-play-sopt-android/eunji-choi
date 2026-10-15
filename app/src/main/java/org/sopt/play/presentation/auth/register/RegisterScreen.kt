@@ -155,3 +155,21 @@ private fun RegisterScreenPreview() {
         )
     }
 }
+
+@Preview(showBackground = true, fontScale = 1.5f)
+@Composable
+private fun RegisterScreenLargeFontPreview() {
+    PlaySoptTheme {
+        RegisterScreen(
+            nameState = rememberTextFieldState(),
+            emailState = rememberTextFieldState(),
+            passwordState = rememberTextFieldState(),
+            passwordConfirmState = rememberTextFieldState(),
+            emailErrorMessage = stringResource(R.string.email_error),
+            passwordErrorMessage = null,
+            passwordConfirmErrorMessage = null,
+            registerEnabled = true,
+            onRegisterClick = {},
+        )
+    }
+}
