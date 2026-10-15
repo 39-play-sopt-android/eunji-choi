@@ -134,3 +134,19 @@ private fun HomeScreenPreview() {
         )
     }
 }
+
+@Preview(showBackground = true, fontScale = 1.5f)
+@Composable
+private fun HomeScreenLargeFontPreview() {
+    PlaySoptTheme {
+        HomeScreen(
+            userName = "김솝트",
+            paddingValues = PaddingValues(),
+            banners = BannerDummyData.banners,
+            products = ProductDummyData.products,
+            favorites = setOf(ProductDummyData.products.first().id),
+            onFavoriteClick = {},
+            onSearchClick = {},
+        )
+    }
+}

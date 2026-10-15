@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -61,9 +60,11 @@ fun HomeTabMenu(
 @Composable
 private fun HomeTabMenuPreview() {
     PlaySoptTheme {
-        Row(
+        Column (
             modifier = Modifier
-                .padding(all = 20.dp)
+                .padding(all = 20.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HomeTabMenu(
                 menu = stringResource(R.string.home_menu_home),

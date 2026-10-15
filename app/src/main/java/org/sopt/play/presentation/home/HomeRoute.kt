@@ -8,10 +8,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import org.sopt.play.data.dummy.BannerDummyData
 import org.sopt.play.data.dummy.ProductDummyData
-import org.sopt.play.data.dummy.UserDummyData
 
 @Composable
 fun HomeRoute(
+    registeredUserName: String,
     paddingValues: PaddingValues,
 ) {
     var favorites by remember {
@@ -19,7 +19,7 @@ fun HomeRoute(
     }
 
     HomeScreen(
-        userName = UserDummyData.NAME,
+        userName = registeredUserName,
         paddingValues = paddingValues,
         banners = BannerDummyData.banners,
         products = ProductDummyData.products,

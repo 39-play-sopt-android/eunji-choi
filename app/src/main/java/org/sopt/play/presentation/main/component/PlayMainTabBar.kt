@@ -1,10 +1,11 @@
 package org.sopt.play.presentation.main.component
 
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
@@ -89,9 +90,26 @@ private fun PlayMainTabBarItem(
 @Composable
 private fun PlayMainTabBarPreview() {
     PlaySoptTheme {
-        PlayMainTabBar(
-            currentTab = MainTab.HOME,
-            onTabClick = {},
-        )
+        Column(
+            modifier = Modifier
+                .background(color = PlaySoptTheme.colors.black)
+                .padding(all = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            PlayMainTabBar(
+                currentTab = MainTab.HOME,
+                onTabClick = {},
+            )
+
+            PlayMainTabBar(
+                currentTab = MainTab.LIKE,
+                onTabClick = {},
+            )
+
+            PlayMainTabBar(
+                currentTab = MainTab.MYPAGE,
+                onTabClick = {},
+            )
+        }
     }
 }

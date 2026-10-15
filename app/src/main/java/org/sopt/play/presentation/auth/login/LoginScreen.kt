@@ -143,3 +143,19 @@ private fun LoginScreenPreview() {
         )
     }
 }
+
+@Preview(showBackground = true, fontScale = 1.5f)
+@Composable
+private fun LoginScreenLargeFontPreview() {
+    PlaySoptTheme {
+        LoginScreen(
+            emailState = rememberTextFieldState(),
+            passwordState = rememberTextFieldState(),
+            emailErrorMessage = stringResource(R.string.email_error),
+            passwordErrorMessage = null,
+            loginEnabled = true,
+            onLoginClick = {},
+            onRegisterClick = {},
+        )
+    }
+}

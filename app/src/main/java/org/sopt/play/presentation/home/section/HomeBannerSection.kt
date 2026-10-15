@@ -4,7 +4,6 @@ import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
@@ -56,7 +55,6 @@ private fun HomeBannerSectionPreview() {
     PlaySoptTheme {
         HomeBannerSection(
             banners = BannerDummyData.banners,
-            modifier = Modifier.fillMaxWidth()
         )
     }
 }
