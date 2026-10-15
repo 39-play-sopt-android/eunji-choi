@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.R
+import org.sopt.play.core.common.extension.blockPagerSwipe
 import org.sopt.play.core.common.extension.noRippleClickable
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
@@ -26,6 +27,7 @@ fun HomeTopBar(
 ) {
     Row(
         modifier = modifier
+            .blockPagerSwipe()
             .fillMaxWidth()
             .background(color = PlaySoptTheme.colors.white)
             .padding(start = 16.dp, end = 6.dp),

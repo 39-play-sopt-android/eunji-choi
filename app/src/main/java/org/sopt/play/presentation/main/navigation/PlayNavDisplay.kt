@@ -11,13 +11,10 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import org.sopt.play.core.common.navigation.MainTabRoute
 import org.sopt.play.core.common.navigation.Route
 import org.sopt.play.presentation.auth.login.LoginRoute
 import org.sopt.play.presentation.auth.register.RegisterRoute
-import org.sopt.play.presentation.home.HomeRoute
-import org.sopt.play.presentation.like.LikeRoute
-import org.sopt.play.presentation.mypage.MyPageRoute
+import org.sopt.play.presentation.main.MainTabRoute
 
 @Composable
 fun PlayNavDisplay(
@@ -25,6 +22,7 @@ fun PlayNavDisplay(
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
+    var registeredUserName by rememberSaveable { mutableStateOf("") }
     var registeredEmail by rememberSaveable { mutableStateOf("") }
     var registeredPassword by rememberSaveable { mutableStateOf("") }
 
@@ -41,7 +39,7 @@ fun PlayNavDisplay(
                     navigateToRegister = { backStack.add(Route.Register) },
                     navigateToHome = {
                         backStack.clear()
-                        backStack.add(MainTabRoute.Home)
+                        backStack.add(Route.Main)
                     },
                 )
             }
@@ -49,7 +47,8 @@ fun PlayNavDisplay(
             entry<Route.Register> {
                 RegisterRoute(
                     paddingValues = paddingValues,
-                    navigateToLogin = { email, password ->
+                    navigateToLogin = { name, email, password ->
+                        registeredUserName = name
                         registeredEmail = email
                         registeredPassword = password
                         backStack.removeLastOrNull()
@@ -57,16 +56,11 @@ fun PlayNavDisplay(
                 )
             }
 
-            entry<MainTabRoute.Home> {
-                HomeRoute(paddingValues = paddingValues)
-            }
-
-            entry<MainTabRoute.Like> {
-                LikeRoute(paddingValues = paddingValues)
-            }
-
-            entry<MainTabRoute.MyPage> {
-                MyPageRoute(paddingValues = paddingValues)
+            entry<Route.Main> {
+                MainTabRoute(
+                    registeredUserName = registeredUserName,
+                    paddingValues = paddingValues
+                )
             }
         }
     )

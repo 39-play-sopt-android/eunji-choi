@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import org.sopt.play.core.common.extension.blockPagerSwipe
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 import org.sopt.play.presentation.home.component.HomeTabMenu
 import org.sopt.play.presentation.home.model.HomeMenu
@@ -19,7 +20,9 @@ fun HomeMenuSection(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier.horizontalScroll(rememberScrollState())
+        modifier = modifier
+            .blockPagerSwipe()
+            .horizontalScroll(rememberScrollState())
     ) {
         HomeMenu.entries.forEach { menu ->
             HomeTabMenu(

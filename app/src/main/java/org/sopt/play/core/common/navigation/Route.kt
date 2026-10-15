@@ -9,4 +9,7 @@ sealed interface Route : NavKey {
 
     @Serializable
     data object Register : Route
+
+    @Serializable
+    data object Main : Route
 }
