@@ -11,5 +11,5 @@ sealed interface Route : NavKey {
     data object Register : Route
 
     @Serializable
-    data object Main : Route
+    data object MainTab : Route
 }

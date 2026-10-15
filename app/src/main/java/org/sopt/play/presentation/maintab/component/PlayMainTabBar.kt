@@ -1,4 +1,4 @@
-package org.sopt.play.presentation.main.component
+package org.sopt.play.presentation.maintab.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.core.common.extension.noRippleClickable
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
-import org.sopt.play.presentation.main.navigation.MainTab
+import org.sopt.play.presentation.maintab.MainTab
 
 @Composable
 fun PlayMainTabBar(

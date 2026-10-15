@@ -1,9 +1,8 @@
-package org.sopt.play.presentation.main.navigation
+package org.sopt.play.presentation.maintab
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import org.sopt.play.R
-
 
 enum class MainTab(
     @DrawableRes val selectedIcon: Int,
@@ -24,5 +23,5 @@ enum class MainTab(
         selectedIcon = R.drawable.ic_user_filled_24,
         unselectedIcon = R.drawable.ic_user_unfilled_24,
         label = R.string.main_tab_mypage,
-    );
+    )
 }

@@ -116,6 +116,7 @@ fun HomeProductCard(
 private fun HomeProductCardPreview() {
     PlaySoptTheme {
         val dummyItem = ProductModel(
+            id = "1",
             imageUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_autumn.png",
             storeName = "슬로우앤드",
             caption = "[\uD83C\uDF41가을/3기장선택!]",
@@ -124,6 +125,7 @@ private fun HomeProductCardPreview() {
         )
 
         val dummyLongItem = ProductModel(
+            id = "2",
             imageUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_autumn.png",
             storeName = "슬로우앤드슬로우앤드슬로우앤드슬로우앤드슬로우앤드슬로우앤드슬로우앤드",
             caption = "[\uD83C\uDF41가을/3기장선택!] made. 모먼트 투커버 올데이슬랙스 (+숏/베이직/롱ver) - 4 size",

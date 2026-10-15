@@ -14,7 +14,7 @@ import androidx.navigation3.ui.NavDisplay
 import org.sopt.play.core.common.navigation.Route
 import org.sopt.play.presentation.auth.login.LoginRoute
 import org.sopt.play.presentation.auth.register.RegisterRoute
-import org.sopt.play.presentation.main.MainTabRoute
+import org.sopt.play.presentation.maintab.MainTabRoute
 
 @Composable
 fun PlayNavDisplay(
@@ -39,7 +39,7 @@ fun PlayNavDisplay(
                     navigateToRegister = { backStack.add(Route.Register) },
                     navigateToHome = {
                         backStack.clear()
-                        backStack.add(Route.Main)
+                        backStack.add(Route.MainTab)
                     },
                 )
             }
@@ -56,7 +56,7 @@ fun PlayNavDisplay(
                 )
             }
 
-            entry<Route.Main> {
+            entry<Route.MainTab> {
                 MainTabRoute(
                     registeredUserName = registeredUserName,
                     paddingValues = paddingValues

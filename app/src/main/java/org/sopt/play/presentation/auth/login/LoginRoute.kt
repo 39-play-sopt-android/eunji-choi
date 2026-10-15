@@ -1,6 +1,7 @@
 package org.sopt.play.presentation.auth.login
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -70,6 +71,8 @@ fun LoginRoute(
 
             navigateToRegister()
         },
-        modifier = Modifier.padding(paddingValues)
+        modifier = Modifier
+            .padding(paddingValues)
+            .consumeWindowInsets(paddingValues)
     )
 }
