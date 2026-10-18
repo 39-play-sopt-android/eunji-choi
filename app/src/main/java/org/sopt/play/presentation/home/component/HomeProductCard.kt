@@ -76,7 +76,6 @@ fun HomeProductCard(
                 color = PlaySoptTheme.colors.black,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(horizontal = 8.dp)
             )
 
             Text(
@@ -85,7 +84,6 @@ fun HomeProductCard(
                 color = PlaySoptTheme.colors.black,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(horizontal = 8.dp)
             )
 
             Row(
