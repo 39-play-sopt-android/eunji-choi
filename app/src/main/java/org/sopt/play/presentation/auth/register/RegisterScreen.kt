@@ -21,11 +21,11 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.R
 import org.sopt.play.core.designsystem.component.button.PlayButton
 import org.sopt.play.core.designsystem.component.textfield.PlayTextField
+import org.sopt.play.core.designsystem.preview.FontScalePreviews
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @Composable
@@ -138,27 +138,9 @@ fun RegisterScreen(
     }
 }
 
-@Preview(showBackground = true)
+@FontScalePreviews
 @Composable
 private fun RegisterScreenPreview() {
-    PlaySoptTheme {
-        RegisterScreen(
-            nameState = rememberTextFieldState(),
-            emailState = rememberTextFieldState(),
-            passwordState = rememberTextFieldState(),
-            passwordConfirmState = rememberTextFieldState(),
-            emailErrorMessage = stringResource(R.string.email_error),
-            passwordErrorMessage = null,
-            passwordConfirmErrorMessage = null,
-            registerEnabled = true,
-            onRegisterClick = {},
-        )
-    }
-}
-
-@Preview(showBackground = true, fontScale = 1.5f)
-@Composable
-private fun RegisterScreenLargeFontPreview() {
     PlaySoptTheme {
         RegisterScreen(
             nameState = rememberTextFieldState(),

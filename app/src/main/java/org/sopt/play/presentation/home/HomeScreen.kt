@@ -19,9 +19,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.R
+import org.sopt.play.core.designsystem.preview.FontScalePreviews
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 import org.sopt.play.presentation.home.component.HomeTopBar
 import org.sopt.play.presentation.home.dummy.BannerDummyData
@@ -117,25 +117,9 @@ fun HomeScreen(
     }
 }
 
-@Preview(showBackground = true)
+@FontScalePreviews
 @Composable
 private fun HomeScreenPreview() {
-    PlaySoptTheme {
-        HomeScreen(
-            userName = "김솝트",
-            paddingValues = PaddingValues(),
-            banners = BannerDummyData.banners,
-            products = ProductDummyData.products,
-            favorites = setOf(ProductDummyData.products.first().id),
-            onFavoriteClick = {},
-            onSearchClick = {},
-        )
-    }
-}
-
-@Preview(showBackground = true, fontScale = 1.5f)
-@Composable
-private fun HomeScreenLargeFontPreview() {
     PlaySoptTheme {
         HomeScreen(
             userName = "김솝트",

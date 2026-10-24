@@ -25,12 +25,12 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.R
 import org.sopt.play.core.common.extension.noRippleClickable
 import org.sopt.play.core.designsystem.component.button.PlayButton
 import org.sopt.play.core.designsystem.component.textfield.PlayTextField
+import org.sopt.play.core.designsystem.preview.FontScalePreviews
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @Composable
@@ -131,25 +131,9 @@ fun LoginScreen(
     }
 }
 
-@Preview(showBackground = true)
+@FontScalePreviews
 @Composable
 private fun LoginScreenPreview() {
-    PlaySoptTheme {
-        LoginScreen(
-            emailState = rememberTextFieldState(),
-            passwordState = rememberTextFieldState(),
-            emailErrorMessage = stringResource(R.string.email_error),
-            passwordErrorMessage = null,
-            loginEnabled = true,
-            onLoginClick = {},
-            onRegisterClick = {},
-        )
-    }
-}
-
-@Preview(showBackground = true, fontScale = 1.5f)
-@Composable
-private fun LoginScreenLargeFontPreview() {
     PlaySoptTheme {
         LoginScreen(
             emailState = rememberTextFieldState(),
