@@ -9,11 +9,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import org.sopt.play.R
 import org.sopt.play.core.common.extension.blockPagerSwipe
@@ -34,11 +37,17 @@ fun HomeTopBar(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Text(
-            text = stringResource(R.string.topbar_title),
-            style = PlaySoptTheme.typography.b28,
-            color = PlaySoptTheme.colors.black,
-        )
+        val density = LocalDensity.current
+
+        CompositionLocalProvider(
+            LocalDensity provides Density(density.density, fontScale = 1f)
+        ) {
+            Text(
+                text = stringResource(R.string.topbar_title),
+                style = PlaySoptTheme.typography.b28,
+                color = PlaySoptTheme.colors.black,
+            )
+        }
 
         Icon(
             painter = painterResource(id = R.drawable.ic_search_28),
