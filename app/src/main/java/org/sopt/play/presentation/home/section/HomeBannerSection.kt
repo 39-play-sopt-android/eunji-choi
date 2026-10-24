@@ -32,7 +32,7 @@ fun HomeBannerSection(
     LazyRow(
         state = state,
         flingBehavior = flingBehavior,
-        contentPadding = PaddingValues(horizontal = 16.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
     ) {

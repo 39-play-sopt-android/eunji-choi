@@ -52,7 +52,10 @@ fun HomeScreen(
     val productRows = remember(products) { products.chunked(2) }
 
     Column(
-        modifier = modifier.padding(paddingValues)
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = PlaySoptTheme.colors.white)
+            .padding(paddingValues)
     ) {
         HomeTopBar(
             modifier = Modifier.fillMaxWidth(),
@@ -61,8 +64,7 @@ fun HomeScreen(
 
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .background(color = PlaySoptTheme.colors.white),
+                .fillMaxSize(),
             contentPadding = PaddingValues(bottom = 96.dp),
         ) {
             item {
@@ -109,11 +111,6 @@ fun HomeScreen(
                     rowItems = rowItems,
                     favorites = favorites,
                     onFavoriteClick = onFavoriteClick,
-                    modifier = if (index < productRows.lastIndex) {
-                        Modifier.padding(bottom = 15.dp)
-                    } else {
-                        Modifier
-                    },
                 )
             }
         }

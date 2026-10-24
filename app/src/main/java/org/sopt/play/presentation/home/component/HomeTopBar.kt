@@ -38,7 +38,6 @@ fun HomeTopBar(
             text = stringResource(R.string.topbar_title),
             style = PlaySoptTheme.typography.b28,
             color = PlaySoptTheme.colors.black,
-            modifier = Modifier
         )
 
         Icon(

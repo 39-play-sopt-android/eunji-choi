@@ -70,6 +70,7 @@ private fun PlayMainTabBarItem(
             .noRippleClickable(onClick = onClick)
             .padding(vertical = 6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         Icon(
             painter = painterResource(icon),
