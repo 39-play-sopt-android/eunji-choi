@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.core.designsystem.component.asyncimage.PlayAsyncImage
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
-import org.sopt.play.data.dummy.BannerDummyData
+import org.sopt.play.presentation.home.dummy.BannerDummyData
 import org.sopt.play.presentation.home.model.BannerModel
 
 @Composable

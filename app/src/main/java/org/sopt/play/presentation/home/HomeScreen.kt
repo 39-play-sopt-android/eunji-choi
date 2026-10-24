@@ -23,9 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.R
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
-import org.sopt.play.data.dummy.BannerDummyData
-import org.sopt.play.data.dummy.ProductDummyData
 import org.sopt.play.presentation.home.component.HomeTopBar
+import org.sopt.play.presentation.home.dummy.BannerDummyData
+import org.sopt.play.presentation.home.dummy.ProductDummyData
 import org.sopt.play.presentation.home.model.BannerModel
 import org.sopt.play.presentation.home.model.HomeCategory
 import org.sopt.play.presentation.home.model.HomeMenu

@@ -1,4 +1,4 @@
-package org.sopt.play.data.dummy
+package org.sopt.play.presentation.home.dummy
 
 import org.sopt.play.presentation.home.model.ProductModel
 
