@@ -6,15 +6,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import org.sopt.play.R
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.play.core.common.extension.toast
-import org.sopt.play.presentation.auth.util.AuthValidator
 
 @Composable
 fun LoginRoute(
@@ -23,48 +23,40 @@ fun LoginRoute(
     registeredPassword: String,
     navigateToRegister: () -> Unit,
     navigateToHome: () -> Unit,
+    viewModel: LoginViewModel = viewModel { LoginViewModel(registeredEmail, registeredPassword) }
 ){
     val context = LocalContext.current
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     val emailState = rememberTextFieldState()
     val passwordState = rememberTextFieldState()
 
-    val loginEnabled by remember {
-        derivedStateOf {
-            AuthValidator.isValidEmail(emailState.text.toString()) &&
-                    AuthValidator.isValidPassword(passwordState.text.toString())
+    LaunchedEffect(emailState) {
+        snapshotFlow { emailState.text.toString() }
+            .collect { viewModel.onIntent(LoginIntent.EmailChanged(it)) }
+    }
+
+    LaunchedEffect(passwordState) {
+        snapshotFlow { passwordState.text.toString() }
+            .collect { viewModel.onIntent(LoginIntent.PasswordChanged(it)) }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { effect ->
+            when (effect) {
+                is LoginSideEffect.ShowToast -> context.toast(effect.messageRes)
+                LoginSideEffect.NavigateToHome -> navigateToHome()
+            }
         }
     }
-
-    val isEmailError by remember {
-        derivedStateOf { AuthValidator.emailError(emailState.text.toString()) }
-    }
-    val emailErrorMessage = isEmailError?.let { stringResource(it) }
-
-    val isPasswordError by remember {
-        derivedStateOf { AuthValidator.passwordError(passwordState.text.toString()) }
-    }
-    val passwordErrorMessage = isPasswordError?.let { stringResource(it) }
-
-    val loginFailureMessage = stringResource(R.string.login_failure)
-    val loginSuccessMessage = stringResource(R.string.login_success)
 
     LoginScreen(
         emailState = emailState,
         passwordState = passwordState,
-        emailErrorMessage = emailErrorMessage,
-        passwordErrorMessage = passwordErrorMessage,
-        loginEnabled = loginEnabled,
-        onLoginClick = {
-            val isLoginFailed = emailState.text.toString() != registeredEmail || passwordState.text.toString() != registeredPassword
-
-            if (isLoginFailed) {
-                context.toast(loginFailureMessage)
-                return@LoginScreen
-            }
-
-            context.toast(loginSuccessMessage)
-            navigateToHome()
-        },
+        emailErrorMessage = state.emailError?.let { stringResource(it) },
+        passwordErrorMessage = state.passwordError?.let { stringResource(it)},
+        loginEnabled = state.loginEnabled,
+        onLoginClick = { viewModel.onIntent(LoginIntent.LoginClicked) },
         onRegisterClick = {
             emailState.clearText()
             passwordState.clearText()
