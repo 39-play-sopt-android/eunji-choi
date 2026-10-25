@@ -25,6 +25,8 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,13 +49,17 @@ fun PlayTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onKeyboardAction: KeyboardActionHandler? = null,
 ) {
+    val isEmpty by remember(state) { derivedStateOf { state.text.isEmpty() } }
+
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
 
     val isError = !errorMessage.isNullOrEmpty()
 
     var lastErrorMessage by remember { mutableStateOf("") }
-    if (isError) lastErrorMessage = errorMessage
+    SideEffect {
+        if (isError) lastErrorMessage = errorMessage
+    }
 
     val textStyle = PlaySoptTheme.typography.m18
     val textColor = if (isError) PlaySoptTheme.colors.gray6
@@ -94,7 +100,7 @@ fun PlayTextField(
                         )
                         .padding(all = 16.dp),
                 ) {
-                    if (state.text.isEmpty()) {
+                    if (isEmpty) {
                         Text(
                             text = placeholder,
                             style = textStyle,
@@ -112,7 +118,7 @@ fun PlayTextField(
                     exit = shrinkVertically() + fadeOut(),
                 ) {
                     Text(
-                        text = lastErrorMessage,
+                        text = if (isError) errorMessage else lastErrorMessage,
                         style = PlaySoptTheme.typography.m14,
                         color = PlaySoptTheme.colors.red,
                         modifier = Modifier.padding(start = 8.dp, top = 6.dp),
