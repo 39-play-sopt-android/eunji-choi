@@ -42,7 +42,7 @@ fun HomeScreen(
     banners: List<BannerModel>,
     products: List<ProductModel>,
     favorites: Set<String>,
-    onFavoriteClick: (ProductModel) -> Unit,
+    onFavoriteClick: (id: String) -> Unit,
     onSearchClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

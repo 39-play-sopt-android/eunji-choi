@@ -3,31 +3,24 @@ package org.sopt.play.presentation.home
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import org.sopt.play.presentation.home.dummy.BannerDummyData
-import org.sopt.play.presentation.home.dummy.ProductDummyData
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun HomeRoute(
     registeredUserName: String,
     paddingValues: PaddingValues,
+    viewModel: HomeViewModel = viewModel(),
 ) {
-    var favorites by rememberSaveable {
-        mutableStateOf(setOf(ProductDummyData.products.first().id))
-    }
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeScreen(
         userName = registeredUserName,
         paddingValues = paddingValues,
-        banners = BannerDummyData.banners,
-        products = ProductDummyData.products,
-        favorites = favorites,
-        onFavoriteClick = { product ->
-            favorites = if (product.id in favorites) favorites - product.id
-            else favorites + product.id
-        },
-        onSearchClick = {},
+        banners = state.banners,
+        products = state.products,
+        favorites = state.favorites,
+        onFavoriteClick = { viewModel.onIntent(HomeIntent.FavoriteClicked(it)) },
+        onSearchClick = { viewModel.onIntent(HomeIntent.SearchClicked) },
     )
 }
