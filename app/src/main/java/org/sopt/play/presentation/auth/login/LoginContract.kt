@@ -19,13 +19,13 @@ data class LoginState(
         get() = AuthValidator.isValidEmail(email) && AuthValidator.isValidPassword(password)
 }
 
-sealed interface LoginIntent { // 사용자가 한 일
+sealed interface LoginIntent {
     data class EmailChanged(val email: String) : LoginIntent
     data class PasswordChanged(val password: String) : LoginIntent
     data object LoginClicked : LoginIntent
 }
 
-sealed interface LoginSideEffect { // 뷰모델이 시킨 일
+sealed interface LoginSideEffect {
     data class ShowToast(@StringRes val messageRes: Int) : LoginSideEffect
     data object NavigateToHome : LoginSideEffect
 }
