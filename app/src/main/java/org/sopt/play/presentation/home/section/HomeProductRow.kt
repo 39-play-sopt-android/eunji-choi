@@ -11,13 +11,13 @@ import androidx.compose.ui.unit.dp
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 import org.sopt.play.presentation.home.component.HomeProductCard
 import org.sopt.play.presentation.home.dummy.ProductDummyData
-import org.sopt.play.presentation.home.model.ProductModel
+import org.sopt.play.domain.model.ProductModel
 
 @Composable
 fun HomeProductRow(
     rowItems: List<ProductModel>,
     favorites: Set<String>,
-    onFavoriteClick: (ProductModel) -> Unit,
+    onFavoriteClick: (id: String) -> Unit,
     modifier: Modifier = Modifier,
     columnCount: Int = 2,
 ) {
@@ -29,7 +29,7 @@ fun HomeProductRow(
             HomeProductCard(
                 item = product,
                 isFavorite = product.id in favorites,
-                onFavoriteClick = { onFavoriteClick(product) },
+                onFavoriteClick = { onFavoriteClick(product.id) },
                 modifier = Modifier.weight(1f),
             )
         }
