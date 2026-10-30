@@ -22,7 +22,7 @@ fun LoginRoute(
     navigateToRegister: () -> Unit,
     navigateToHome: () -> Unit,
     viewModel: LoginViewModel = viewModel(),
-){
+) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -52,7 +52,7 @@ fun LoginRoute(
         emailState = emailState,
         passwordState = passwordState,
         emailErrorMessage = state.emailError?.let { stringResource(it) },
-        passwordErrorMessage = state.passwordError?.let { stringResource(it)},
+        passwordErrorMessage = state.passwordError?.let { stringResource(it) },
         loginEnabled = state.loginEnabled,
         onLoginClick = { viewModel.onIntent(LoginIntent.LoginClicked) },
         onRegisterClick = {
