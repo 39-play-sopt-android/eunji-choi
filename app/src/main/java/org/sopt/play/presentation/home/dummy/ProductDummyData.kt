@@ -1,6 +1,6 @@
 package org.sopt.play.presentation.home.dummy
 
-import org.sopt.play.presentation.home.model.ProductModel
+import org.sopt.play.domain.model.ProductModel
 
 object ProductDummyData {
     val products = listOf(

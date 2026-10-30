@@ -10,8 +10,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.sopt.play.R
+import org.sopt.play.di.RepositoryModule
+import org.sopt.play.domain.repository.AuthRepository
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel(
+    private val authRepository: AuthRepository = RepositoryModule.authRepository,
+) : ViewModel() {
     private val _state = MutableStateFlow(RegisterState())
     val state: StateFlow<RegisterState> = _state.asStateFlow()
 
@@ -29,10 +33,17 @@ class RegisterViewModel : ViewModel() {
     }
 
     private fun register() {
-        // 로컬 스토리지에 회원 정보 저장
+        val state = _state.value
+
         viewModelScope.launch {
-            _sideEffect.send(RegisterSideEffect.ShowToast(R.string.register_success))
-            _sideEffect.send(RegisterSideEffect.NavigateToLogin)
+            authRepository.register(state.name, state.email, state.password)
+                .onSuccess {
+                    _sideEffect.send(RegisterSideEffect.ShowToast(R.string.register_success))
+                    _sideEffect.send(RegisterSideEffect.NavigateToLogin)
+                }
+                .onFailure {
+                    _sideEffect.send(RegisterSideEffect.ShowToast(R.string.register_failure))
+                }
         }
     }
 

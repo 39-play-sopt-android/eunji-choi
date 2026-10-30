@@ -29,7 +29,7 @@ import org.sopt.play.presentation.home.dummy.ProductDummyData
 import org.sopt.play.presentation.home.model.BannerModel
 import org.sopt.play.presentation.home.model.HomeCategory
 import org.sopt.play.presentation.home.model.HomeMenu
-import org.sopt.play.presentation.home.model.ProductModel
+import org.sopt.play.domain.model.ProductModel
 import org.sopt.play.presentation.home.section.HomeBannerSection
 import org.sopt.play.presentation.home.section.HomeCategorySection
 import org.sopt.play.presentation.home.section.HomeMenuSection

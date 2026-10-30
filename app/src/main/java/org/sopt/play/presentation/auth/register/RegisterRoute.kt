@@ -18,7 +18,7 @@ import org.sopt.play.core.common.extension.toast
 @Composable
 fun RegisterRoute(
     paddingValues: PaddingValues,
-    navigateToLogin: (name: String, email: String, password: String) -> Unit,
+    navigateToLogin: () -> Unit,
     viewModel: RegisterViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -53,7 +53,7 @@ fun RegisterRoute(
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 is RegisterSideEffect.ShowToast -> context.toast(effect.messageRes)
-                RegisterSideEffect.NavigateToLogin -> navigateToLogin(state.name, state.email, state.password)
+                RegisterSideEffect.NavigateToLogin -> navigateToLogin()
             }
         }
     }

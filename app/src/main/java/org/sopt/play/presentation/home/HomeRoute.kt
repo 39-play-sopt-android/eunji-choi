@@ -8,14 +8,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun HomeRoute(
-    registeredUserName: String,
     paddingValues: PaddingValues,
     viewModel: HomeViewModel = viewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeScreen(
-        userName = registeredUserName,
+        userName = state.userName,
         paddingValues = paddingValues,
         banners = state.banners,
         products = state.products,

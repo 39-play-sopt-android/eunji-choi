@@ -10,10 +10,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.sopt.play.R
+import org.sopt.play.di.RepositoryModule
+import org.sopt.play.domain.repository.AuthException
+import org.sopt.play.domain.repository.AuthRepository
 
 class LoginViewModel(
-    private val registeredEmail: String,
-    private val registeredPassword: String,
+    private val authRepository: AuthRepository = RepositoryModule.authRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState> = _state.asStateFlow()
@@ -31,16 +33,22 @@ class LoginViewModel(
 
     private fun login() {
         val state = _state.value
-        val isLoginFailed = state.email != registeredEmail || state.password != registeredPassword
 
         viewModelScope.launch {
-            if (isLoginFailed) {
-                _sideEffect.send(LoginSideEffect.ShowToast(R.string.login_failure))
-                return@launch
-            }
-
-            _sideEffect.send(LoginSideEffect.ShowToast(R.string.login_success))
-            _sideEffect.send(LoginSideEffect.NavigateToHome)
+            authRepository.login(state.email, state.password)
+                .onSuccess {
+                    _sideEffect.send(LoginSideEffect.ShowToast(R.string.login_success))
+                    _sideEffect.send(LoginSideEffect.NavigateToHome)
+                }
+                .onFailure { error ->
+                    val message = when (error) {
+                        is AuthException.EmailNotFound -> R.string.login_failure_email_not_found
+                        is AuthException.NoAccountFound -> R.string.login_failure_no_account
+                        is AuthException.PasswordMismatch -> R.string.login_failure_password_mismatch
+                        else -> R.string.login_failure
+                    }
+                    _sideEffect.send(LoginSideEffect.ShowToast(message))
+                }
         }
     }
 

@@ -17,7 +17,6 @@ import org.sopt.play.presentation.mypage.MyPageRoute
 
 @Composable
 fun MainTabRoute(
-    registeredUserName: String,
     paddingValues: PaddingValues,
 ) {
     val tabs = MainTab.entries
@@ -34,11 +33,7 @@ fun MainTabRoute(
             modifier = Modifier.weight(1f),
         ) { page ->
             when (tabs[page]) {
-                MainTab.HOME -> HomeRoute(
-                    registeredUserName = registeredUserName,
-                    paddingValues = PaddingValues(),
-                )
-
+                MainTab.HOME -> HomeRoute(PaddingValues())
                 MainTab.LIKE -> LikeRoute(PaddingValues())
                 MainTab.MYPAGE -> MyPageRoute(PaddingValues())
             }

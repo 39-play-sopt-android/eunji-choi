@@ -1,9 +1,10 @@
 package org.sopt.play.presentation.home
 
+import org.sopt.play.domain.model.ProductModel
 import org.sopt.play.presentation.home.model.BannerModel
-import org.sopt.play.presentation.home.model.ProductModel
 
 data class HomeState(
+    val userName: String = "",
     val banners: List<BannerModel> = emptyList(),
     val products: List<ProductModel> = emptyList(),
     val favorites: Set<String> = emptySet(),

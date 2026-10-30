@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 import org.sopt.play.presentation.home.component.HomeProductCard
 import org.sopt.play.presentation.home.dummy.ProductDummyData
-import org.sopt.play.presentation.home.model.ProductModel
+import org.sopt.play.domain.model.ProductModel
 
 @Composable
 fun HomeProductRow(

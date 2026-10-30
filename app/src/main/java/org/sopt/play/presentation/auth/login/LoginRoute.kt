@@ -19,11 +19,9 @@ import org.sopt.play.core.common.extension.toast
 @Composable
 fun LoginRoute(
     paddingValues: PaddingValues,
-    registeredEmail: String,
-    registeredPassword: String,
     navigateToRegister: () -> Unit,
     navigateToHome: () -> Unit,
-    viewModel: LoginViewModel = viewModel { LoginViewModel(registeredEmail, registeredPassword) }
+    viewModel: LoginViewModel = viewModel(),
 ){
     val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
