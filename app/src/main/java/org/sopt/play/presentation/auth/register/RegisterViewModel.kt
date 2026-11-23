@@ -36,7 +36,7 @@ class RegisterViewModel(
         val state = _state.value
 
         viewModelScope.launch {
-            authRepository.register(state.name, state.email, state.password)
+            authRepository.register(state.name.trim(), state.email.trim(), state.password)
                 .onSuccess {
                     _sideEffect.send(RegisterSideEffect.ShowToast(R.string.register_success))
                     _sideEffect.send(RegisterSideEffect.NavigateToLogin)
