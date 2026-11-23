@@ -7,7 +7,7 @@ fun FavoriteEntity.toModel() = ProductModel(
     id = this.id,
     imageUrl = this.imageUrl,
     storeName = this.storeName,
-    caption = this.caption,
+    productName = this.productName,
     discountRate = this.discountRate,
     price = this.price,
 )
@@ -16,7 +16,7 @@ fun ProductModel.toEntity() = FavoriteEntity(
     id = this.id,
     imageUrl = this.imageUrl,
     storeName = this.storeName,
-    caption = this.caption,
+    productName = this.productName,
     discountRate = this.discountRate,
     price = this.price,
 )
