@@ -18,11 +18,6 @@ class FavoriteRepositoryImpl(
             .map { entities -> Result.success(entities.map { it.toModel() }) }
             .catch { emit(Result.failure(it)) }
 
-    override fun getFavoriteIds(): Flow<Result<Set<String>>> =
-        favoriteDao.getFavoriteIds()
-            .map { ids -> Result.success(ids.toSet()) }
-            .catch { emit(Result.failure(it)) }
-
     override suspend fun insert(product: ProductModel): Result<Unit> =
         suspendRunCatching { favoriteDao.insert(product.toEntity()) }
 

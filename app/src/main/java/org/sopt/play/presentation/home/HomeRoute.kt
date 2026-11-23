@@ -18,7 +18,7 @@ fun HomeRoute(
         paddingValues = paddingValues,
         banners = state.banners,
         products = state.products,
-        favorites = state.favorites,
+        favoriteIds = state.favoriteIds,
         onFavoriteClick = { viewModel.onIntent(HomeIntent.FavoriteClicked(it)) },
         onSearchClick = { viewModel.onIntent(HomeIntent.SearchClicked) },
     )

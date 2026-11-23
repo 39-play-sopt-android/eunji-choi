@@ -42,7 +42,7 @@ class HomeViewModel(
             favoriteRepository.getFavorites().collect { result ->
                 result.onSuccess { favorites ->
                     _state.update { state ->
-                        state.copy(favorites = favorites.map { it.id }.toSet())
+                        state.copy(favoriteIds = favorites.map { it.id }.toSet())
                     }
                 }
             }
@@ -53,7 +53,7 @@ class HomeViewModel(
         val product = _state.value.products.find { it.id == id } ?: return
 
         viewModelScope.launch {
-            if (id in _state.value.favorites) favoriteRepository.delete(id)
+            if (id in _state.value.favoriteIds) favoriteRepository.delete(id)
             else favoriteRepository.insert(product)
         }
     }

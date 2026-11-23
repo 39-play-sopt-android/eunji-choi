@@ -23,13 +23,13 @@ import androidx.compose.ui.unit.dp
 import org.sopt.play.R
 import org.sopt.play.core.designsystem.preview.FontScalePreviews
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
+import org.sopt.play.domain.model.ProductModel
 import org.sopt.play.presentation.home.component.HomeTopBar
 import org.sopt.play.presentation.home.dummy.BannerDummyData
 import org.sopt.play.presentation.home.dummy.ProductDummyData
 import org.sopt.play.presentation.home.model.BannerModel
 import org.sopt.play.presentation.home.model.HomeCategory
 import org.sopt.play.presentation.home.model.HomeMenu
-import org.sopt.play.domain.model.ProductModel
 import org.sopt.play.presentation.home.section.HomeBannerSection
 import org.sopt.play.presentation.home.section.HomeCategorySection
 import org.sopt.play.presentation.home.section.HomeMenuSection
@@ -41,7 +41,7 @@ fun HomeScreen(
     paddingValues: PaddingValues,
     banners: List<BannerModel>,
     products: List<ProductModel>,
-    favorites: Set<String>,
+    favoriteIds: Set<String>,
     onFavoriteClick: (id: String) -> Unit,
     onSearchClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -109,7 +109,7 @@ fun HomeScreen(
             ) { index, rowItems ->
                 HomeProductRow(
                     rowItems = rowItems,
-                    favorites = favorites,
+                    favoriteIds = favoriteIds,
                     onFavoriteClick = onFavoriteClick,
                 )
             }
@@ -126,7 +126,7 @@ private fun HomeScreenPreview() {
             paddingValues = PaddingValues(),
             banners = BannerDummyData.banners,
             products = ProductDummyData.products,
-            favorites = setOf(ProductDummyData.products.first().id),
+            favoriteIds = setOf(ProductDummyData.products.first().id),
             onFavoriteClick = {},
             onSearchClick = {},
         )

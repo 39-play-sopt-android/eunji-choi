@@ -7,7 +7,7 @@ data class HomeState(
     val userName: String = "",
     val banners: List<BannerModel> = emptyList(),
     val products: List<ProductModel> = emptyList(),
-    val favorites: Set<String> = emptySet(),
+    val favoriteIds: Set<String> = emptySet(),
 )
 
 sealed interface HomeIntent {
