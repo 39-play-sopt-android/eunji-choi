@@ -1,7 +1,7 @@
 package org.sopt.play.presentation.home
 
+import org.sopt.play.domain.model.BannerModel
 import org.sopt.play.domain.model.ProductModel
-import org.sopt.play.presentation.home.model.BannerModel
 
 data class HomeState(
     val userName: String = "",

@@ -9,24 +9,24 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.sopt.play.di.RepositoryModule
 import org.sopt.play.domain.repository.AuthRepository
+import org.sopt.play.domain.repository.BannerRepository
 import org.sopt.play.domain.repository.FavoriteRepository
-import org.sopt.play.presentation.home.dummy.BannerDummyData
-import org.sopt.play.presentation.home.dummy.ProductDummyData
+import org.sopt.play.domain.repository.ProductRepository
 
 class HomeViewModel(
     private val authRepository: AuthRepository = RepositoryModule.authRepository,
     private val favoriteRepository: FavoriteRepository = RepositoryModule.favoriteRepository,
+    private val productRepository: ProductRepository = RepositoryModule.productRepository,
+    private val bannerRepository: BannerRepository = RepositoryModule.bannerRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(
-        HomeState(
-            userName = authRepository.getUserName(),
-            banners = BannerDummyData.banners,
-            products = ProductDummyData.products,
-        )
+        HomeState(userName = authRepository.getUserName())
     )
     val state: StateFlow<HomeState> = _state.asStateFlow()
 
     init {
+        loadBanners()
+        loadProducts()
         loadFavorites()
     }
 
@@ -34,6 +34,24 @@ class HomeViewModel(
         when (intent) {
             is HomeIntent.FavoriteClicked -> toggleFavorite(intent.id)
             HomeIntent.SearchClicked -> Unit
+        }
+    }
+
+    private fun loadBanners() {
+        viewModelScope.launch {
+            bannerRepository.getBanners()
+                .onSuccess { banners ->
+                    _state.update { state -> state.copy(banners = banners) }
+                }
+        }
+    }
+
+    private fun loadProducts() {
+        viewModelScope.launch {
+            productRepository.getProducts()
+                .onSuccess { products ->
+                    _state.update { state -> state.copy(products = products) }
+                }
         }
     }
 

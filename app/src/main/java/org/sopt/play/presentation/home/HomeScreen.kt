@@ -23,13 +23,12 @@ import androidx.compose.ui.unit.dp
 import org.sopt.play.R
 import org.sopt.play.core.designsystem.preview.FontScalePreviews
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
+import org.sopt.play.domain.model.BannerModel
 import org.sopt.play.domain.model.ProductModel
 import org.sopt.play.presentation.home.component.HomeTopBar
-import org.sopt.play.presentation.home.dummy.BannerDummyData
-import org.sopt.play.presentation.home.dummy.ProductDummyData
-import org.sopt.play.presentation.home.model.BannerModel
 import org.sopt.play.presentation.home.model.HomeCategory
 import org.sopt.play.presentation.home.model.HomeMenu
+import org.sopt.play.presentation.home.preview.HomePreviewData
 import org.sopt.play.presentation.home.section.HomeBannerSection
 import org.sopt.play.presentation.home.section.HomeCategorySection
 import org.sopt.play.presentation.home.section.HomeMenuSection
@@ -124,9 +123,9 @@ private fun HomeScreenPreview() {
         HomeScreen(
             userName = "김솝트",
             paddingValues = PaddingValues(),
-            banners = BannerDummyData.banners,
-            products = ProductDummyData.products,
-            favoriteIds = setOf(ProductDummyData.products.first().id),
+            banners = HomePreviewData.banners,
+            products = HomePreviewData.products,
+            favoriteIds = setOf(HomePreviewData.products.first().id),
             onFavoriteClick = {},
             onSearchClick = {},
         )
