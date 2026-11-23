@@ -5,29 +5,29 @@ import org.sopt.play.domain.repository.AuthException
 import org.sopt.play.domain.repository.AuthRepository
 
 class AuthRepositoryImpl(
-    private val authPrefs: AuthLocalDataSource,
+    private val authLocalDataSource: AuthLocalDataSource,
 ) : AuthRepository {
     override fun register(name: String, email: String, password: String): Result<Unit> {
         return runCatching {
-            authPrefs.saveUser(name, email, password)
+            authLocalDataSource.saveUser(name, email, password)
         }
     }
 
     override fun login(email: String, password: String): Result<Unit> {
         return runCatching {
-            val savedEmail = authPrefs.getEmail()
-            val savedPassword = authPrefs.getPassword()
+            val savedEmail = authLocalDataSource.getEmail()
+            val savedPassword = authLocalDataSource.getPassword()
 
             when {
                 savedEmail == null || savedPassword == null -> throw AuthException.NoAccountFound()
                 savedEmail != email -> throw AuthException.EmailNotFound()
                 savedPassword != password -> throw AuthException.PasswordMismatch()
-                else -> authPrefs.setLoggedInState(true)
+                else -> authLocalDataSource.setLoggedInState(true)
             }
         }
     }
 
-    override fun isLoggedIn(): Boolean = authPrefs.getIsLoggedIn()
+    override fun isLoggedIn(): Boolean = authLocalDataSource.getIsLoggedIn()
 
-    override fun getUserName(): String = authPrefs.getName().orEmpty()
+    override fun getUserName(): String = authLocalDataSource.getName().orEmpty()
 }
