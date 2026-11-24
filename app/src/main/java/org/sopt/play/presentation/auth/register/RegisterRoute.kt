@@ -5,78 +5,69 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import org.sopt.play.R
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.play.core.common.extension.toast
-import org.sopt.play.presentation.auth.util.AuthValidator
 
 @Composable
 fun RegisterRoute(
     paddingValues: PaddingValues,
-    navigateToLogin: (name: String, email: String, password: String) -> Unit,
+    navigateToLogin: () -> Unit,
+    viewModel: RegisterViewModel = viewModel()
 ) {
     val context = LocalContext.current
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     val nameState = rememberTextFieldState()
     val emailState = rememberTextFieldState()
     val passwordState = rememberTextFieldState()
     val passwordConfirmState = rememberTextFieldState()
 
-    val registerEnabled by remember {
-        derivedStateOf {
-            val password = passwordState.text.toString()
-            nameState.text.isNotBlank() &&
-                    AuthValidator.isValidEmail(emailState.text.toString()) &&
-                    AuthValidator.isValidPassword(password) &&
-                    AuthValidator.isValidPasswordConfirm(
-                        password,
-                        passwordConfirmState.text.toString()
-                    )
+    LaunchedEffect(nameState) {
+        snapshotFlow { nameState.text.toString() }
+            .collect { viewModel.onIntent(RegisterIntent.NameChanged(it)) }
+    }
+    
+    LaunchedEffect(emailState) {
+        snapshotFlow { emailState.text.toString() }
+            .collect { viewModel.onIntent(RegisterIntent.EmailChanged(it)) }
+    }
+
+    LaunchedEffect(passwordState) {
+        snapshotFlow { passwordState.text.toString() }
+            .collect { viewModel.onIntent(RegisterIntent.PasswordChanged(it)) }
+    }
+
+    LaunchedEffect(passwordConfirmState) {
+        snapshotFlow { passwordConfirmState.text.toString() }
+            .collect { viewModel.onIntent(RegisterIntent.PasswordConfirmChanged(it)) }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { effect ->
+            when (effect) {
+                is RegisterSideEffect.ShowToast -> context.toast(effect.messageRes)
+                RegisterSideEffect.NavigateToLogin -> navigateToLogin()
+            }
         }
     }
-
-    val isEmailError by remember {
-        derivedStateOf { AuthValidator.emailError(emailState.text.toString()) }
-    }
-    val emailErrorMessage = isEmailError?.let { stringResource(it) }
-
-    val isPasswordError by remember {
-        derivedStateOf { AuthValidator.passwordError(passwordState.text.toString()) }
-    }
-    val passwordErrorMessage = isPasswordError?.let { stringResource(it) }
-
-    val isPasswordConfirmError by remember {
-        derivedStateOf {
-            AuthValidator.passwordConfirmError(
-                passwordState.text.toString(), passwordConfirmState.text.toString()
-            )
-        }
-    }
-    val passwordConfirmErrorMessage = isPasswordConfirmError?.let { stringResource(it) }
-
-    val registerSuccessMessage = stringResource(R.string.register_success)
 
     RegisterScreen(
         nameState = nameState,
         emailState = emailState,
         passwordState = passwordState,
         passwordConfirmState = passwordConfirmState,
-        emailErrorMessage = emailErrorMessage,
-        passwordErrorMessage = passwordErrorMessage,
-        passwordConfirmErrorMessage = passwordConfirmErrorMessage,
-        registerEnabled = registerEnabled,
-        onRegisterClick = {
-            context.toast(registerSuccessMessage)
-            navigateToLogin(
-                nameState.text.toString(),
-                emailState.text.toString(),
-                passwordState.text.toString(),
-            )
-        },
+        emailErrorMessage = state.emailError?.let { stringResource(it) },
+        passwordErrorMessage = state.passwordError?.let { stringResource(it) },
+        passwordConfirmErrorMessage = state.passwordConfirmError?.let { stringResource(it) },
+        registerEnabled = state.registerEnabled,
+        onRegisterClick = { viewModel.onIntent(RegisterIntent.RegisterClicked) },
         modifier = Modifier
             .padding(paddingValues)
             .consumeWindowInsets(paddingValues),

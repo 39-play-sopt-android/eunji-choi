@@ -9,15 +9,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
+import org.sopt.play.domain.model.ProductModel
 import org.sopt.play.presentation.home.component.HomeProductCard
-import org.sopt.play.presentation.home.dummy.ProductDummyData
-import org.sopt.play.presentation.home.model.ProductModel
+import org.sopt.play.presentation.home.preview.HomePreviewData
 
 @Composable
 fun HomeProductRow(
     rowItems: List<ProductModel>,
-    favorites: Set<String>,
-    onFavoriteClick: (ProductModel) -> Unit,
+    favoriteIds: Set<String>,
+    onFavoriteClick: (id: String) -> Unit,
     modifier: Modifier = Modifier,
     columnCount: Int = 2,
 ) {
@@ -28,8 +28,8 @@ fun HomeProductRow(
         rowItems.forEach { product ->
             HomeProductCard(
                 item = product,
-                isFavorite = product.id in favorites,
-                onFavoriteClick = { onFavoriteClick(product) },
+                isFavorite = product.id in favoriteIds,
+                onFavoriteClick = { onFavoriteClick(product.id) },
                 modifier = Modifier.weight(1f),
             )
         }
@@ -44,8 +44,8 @@ fun HomeProductRow(
 private fun HomeProductRowPreview() {
     PlaySoptTheme {
         HomeProductRow(
-            rowItems = ProductDummyData.products.take(2),
-            favorites = setOf(ProductDummyData.products.first().id),
+            rowItems = HomePreviewData.products.take(2),
+            favoriteIds = setOf(HomePreviewData.products.first().id),
             onFavoriteClick = {},
         )
     }

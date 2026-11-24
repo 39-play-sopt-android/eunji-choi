@@ -19,6 +19,9 @@
     <string name="login_go_register">회원가입하기</string>
     <string name="login_success">로그인에 성공했습니다</string>
     <string name="login_failure">이메일 또는 비밀번호가 올바르지 않아요.</string>
+    <string name="login_failure_no_account">계정을 찾을 수 없습니다</string>
+    <string name="login_failure_email_not_found">잘못된 이메일입니다</string>
+    <string name="login_failure_password_mismatch">비밀번호가 올바르지 않습니다</string>
 
     <!-- 회원가입 -->
     <string name="register_title">이메일로 회원가입</string>
@@ -27,6 +30,7 @@
     <string name="register_password_confirm_label">비밀번호 확인</string>
     <string name="register_button">회원가입</string>
     <string name="register_success">회원가입에 성공했습니다</string>
+    <string name="register_failure">회원가입에 실패했습니다</string>
 
     <!-- 홈 -->
     <string name="home_recommend_title">%s님을 위한 추천 아이템</string>
