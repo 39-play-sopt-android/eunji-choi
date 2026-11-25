@@ -32,7 +32,7 @@ import org.sopt.play.R
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @Composable
-fun PostListSearchTextField(
+fun PostSearchTextField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     placeholder: String = "검색어를 입력하세요",
@@ -100,7 +100,7 @@ fun PostListSearchTextField(
 
 @Preview(showBackground = true)
 @Composable
-private fun PostListSearchTextFieldPreview() {
+private fun PostSearchTextFieldPreview() {
     PlaySoptTheme {
         Column(
             modifier = Modifier
@@ -108,11 +108,11 @@ private fun PostListSearchTextFieldPreview() {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            PostListSearchTextField(
+            PostSearchTextField(
                 state = rememberTextFieldState(),
             )
 
-            PostListSearchTextField(
+            PostSearchTextField(
                 state = rememberTextFieldState("솝트"),
             )
         }
