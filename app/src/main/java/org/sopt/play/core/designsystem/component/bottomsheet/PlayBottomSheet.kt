@@ -1,4 +1,4 @@
-package org.sopt.play.presentation.postlist.component
+package org.sopt.play.core.designsystem.component.bottomsheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -30,12 +30,12 @@ import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PostBottomSheet(
+fun PlayBottomSheet(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
     containerColor: Color = PlaySoptTheme.colors.white,
-    dragHandle: @Composable (() -> Unit)? = { PostDragHandle() },
+    dragHandle: @Composable (() -> Unit)? = { PlayDragHandle() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val shape = RoundedCornerShape(
@@ -52,7 +52,7 @@ fun PostBottomSheet(
         sheetGesturesEnabled = false,
         contentWindowInsets = { WindowInsets(0.dp) },
     ) {
-        PostBottomSheetContent(
+        PlayBottomSheetContent(
             shape = shape,
             sheetState = sheetState,
             onDismiss = onDismiss,
@@ -66,7 +66,7 @@ fun PostBottomSheet(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PostBottomSheetContent(
+private fun PlayBottomSheetContent(
     shape: RoundedCornerShape,
     sheetState: SheetState,
     onDismiss: () -> Unit,
@@ -93,7 +93,7 @@ private fun PostBottomSheetContent(
 }
 
 @Composable
-private fun PostDragHandle(
+private fun PlayDragHandle(
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -110,7 +110,7 @@ private fun PostDragHandle(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-private fun PostBottomSheetPreview() {
+private fun PlayBottomSheetPreview() {
     PlaySoptTheme {
         Box(
             modifier = Modifier
@@ -118,12 +118,12 @@ private fun PostBottomSheetPreview() {
                 .background(color = PlaySoptTheme.colors.black)
                 .padding(all = 40.dp),
         ) {
-            PostBottomSheetContent(
+            PlayBottomSheetContent(
                 shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
                 sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
                 onDismiss = {},
                 containerColor = PlaySoptTheme.colors.white,
-                dragHandle = { PostDragHandle() },
+                dragHandle = { PlayDragHandle() },
             ) {
                 Box(
                     modifier = Modifier

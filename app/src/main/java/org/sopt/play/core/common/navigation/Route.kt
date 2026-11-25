@@ -12,4 +12,7 @@ sealed interface Route : NavKey {
 
     @Serializable
     data object MainTab : Route
+
+    @Serializable
+    data object Post : Route
 }

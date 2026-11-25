@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun HomeRoute(
     paddingValues: PaddingValues,
+    navigateToPost: () -> Unit,
     viewModel: HomeViewModel = viewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -20,6 +21,6 @@ fun HomeRoute(
         products = state.products,
         favoriteIds = state.favoriteIds,
         onFavoriteClick = { viewModel.onIntent(HomeIntent.FavoriteClicked(it)) },
-        onSearchClick = { viewModel.onIntent(HomeIntent.SearchClicked) },
+        onSearchClick = navigateToPost,
     )
 }

@@ -1,4 +1,4 @@
-package org.sopt.play.presentation.postlist.component
+package org.sopt.play.presentation.post.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

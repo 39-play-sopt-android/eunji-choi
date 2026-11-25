@@ -48,10 +48,7 @@ class HomeViewModel(
     }
 
     fun onIntent(intent: HomeIntent) {
-        when (intent) {
-            is HomeIntent.FavoriteClicked -> toggleFavorite(intent.id)
-            HomeIntent.SearchClicked -> Unit
-        }
+        if (intent is HomeIntent.FavoriteClicked) toggleFavorite(intent.id)
     }
 
     private fun loadBanners() {

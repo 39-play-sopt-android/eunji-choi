@@ -12,5 +12,4 @@ data class HomeState(
 
 sealed interface HomeIntent {
     data class FavoriteClicked(val id: String) : HomeIntent
-    data object SearchClicked : HomeIntent
 }

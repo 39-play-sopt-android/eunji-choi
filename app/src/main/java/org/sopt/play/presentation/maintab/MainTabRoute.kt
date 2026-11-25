@@ -18,6 +18,7 @@ import org.sopt.play.presentation.mypage.MyPageRoute
 @Composable
 fun MainTabRoute(
     paddingValues: PaddingValues,
+    navigateToPost: () -> Unit,
 ) {
     val tabs = MainTab.entries
     val pagerState = rememberPagerState { tabs.size }
@@ -33,7 +34,10 @@ fun MainTabRoute(
             modifier = Modifier.weight(1f),
         ) { page ->
             when (tabs[page]) {
-                MainTab.HOME -> HomeRoute(PaddingValues())
+                MainTab.HOME -> HomeRoute(
+                    paddingValues = PaddingValues(),
+                    navigateToPost = navigateToPost
+                )
                 MainTab.LIKE -> LikeRoute(PaddingValues())
                 MainTab.MYPAGE -> MyPageRoute(PaddingValues())
             }

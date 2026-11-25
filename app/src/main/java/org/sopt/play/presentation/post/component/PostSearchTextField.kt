@@ -1,4 +1,4 @@
-package org.sopt.play.presentation.postlist.component
+package org.sopt.play.presentation.post.component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
