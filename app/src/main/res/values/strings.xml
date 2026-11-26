@@ -66,4 +66,21 @@
     <!-- 게시글 -->
     <string name="post_create_failure">게시글 작성에 실패했어요</string>
     <string name="post_delete_failure">게시글 삭제에 실패했어요</string>
+    <string name="post_create_button_description">게시글 작성</string>
+
+    <!-- 게시글 검색 -->
+    <string name="post_search_placeholder">검색어를 입력하세요</string>
+    <string name="post_search_icon_description">검색</string>
+
+    <!-- 게시글 작성 바텀시트 -->
+    <string name="post_title_label">제목</string>
+    <string name="post_title_placeholder">제목을 입력하세요.</string>
+    <string name="post_content_label">본문</string>
+    <string name="post_content_placeholder">본문을 입력하세요.</string>
+    <string name="post_complete_button">완료</string>
+
+    <!-- 게시글 삭제 모달 -->
+    <string name="post_delete_title">게시글을 삭제할까요?</string>
+    <string name="post_delete_cancel">취소</string>
+    <string name="post_delete_confirm">삭제</string>
 </resources>

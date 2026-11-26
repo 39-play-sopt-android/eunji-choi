@@ -11,8 +11,10 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.sopt.play.R
 import org.sopt.play.core.designsystem.component.bottomsheet.PlayBottomSheet
 import org.sopt.play.core.designsystem.component.button.PlayButton
 import org.sopt.play.core.designsystem.component.model.PlayButtonType
@@ -54,25 +56,25 @@ private fun PostBottomSheetContent(
         modifier = modifier.fillMaxWidth()
     ) {
         PlayTextField(
-            label = "제목",
+            label = stringResource(R.string.post_title_label),
             state = titleState,
-            placeholder = "제목을 입력하세요.",
+            placeholder = stringResource(R.string.post_title_placeholder),
             maxLength = 20,
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
         PlayTextField(
-            label = "본문",
+            label = stringResource(R.string.post_content_label),
             state = contentState,
-            placeholder = "본문을 입력하세요.",
+            placeholder = stringResource(R.string.post_content_placeholder),
             maxLength = 1000,
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         PlayButton(
-            text = "완료",
+            text = stringResource(R.string.post_complete_button),
             type = if (completeEnabled) PlayButtonType.PRIMARY_ACTIVE else PlayButtonType.DISABLED,
             onClick = onCompleteClick,
         )

@@ -11,9 +11,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.sopt.play.R
 import org.sopt.play.core.designsystem.component.button.PlayButton
 import org.sopt.play.core.designsystem.component.model.PlayButtonType
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
@@ -35,7 +37,7 @@ fun PostModal(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         Text(
-            text = "게시글을 삭제할까요?",
+            text = stringResource(R.string.post_delete_title),
             style = PlaySoptTheme.typography.m18,
             color = PlaySoptTheme.colors.gray6,
             textAlign = TextAlign.Center,
@@ -47,14 +49,14 @@ fun PostModal(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             PlayButton(
-                text = "취소",
+                text = stringResource(R.string.post_delete_cancel),
                 type = PlayButtonType.SECONDARY_ACTIVE,
                 onClick = onCancelClick,
                 modifier = Modifier.weight(1f),
             )
 
             PlayButton(
-                text = "삭제",
+                text = stringResource(R.string.post_delete_confirm),
                 type = PlayButtonType.PRIMARY_ACTIVE,
                 onClick = onDeleteClick,
                 modifier = Modifier.weight(1f),
