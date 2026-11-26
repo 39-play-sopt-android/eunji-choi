@@ -1,11 +1,7 @@
 package org.sopt.play
 
 import android.app.Application
-import org.sopt.play.di.LocalModule
+import dagger.hilt.android.HiltAndroidApp
 
-class PlaySoptApp : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        LocalModule.init(this)
-    }
-}
+@HiltAndroidApp
+class PlaySoptApp : Application()

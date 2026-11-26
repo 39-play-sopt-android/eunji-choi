@@ -2,8 +2,14 @@ package org.sopt.play.data.local.datasource
 
 import android.content.Context
 import androidx.core.content.edit
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AuthLocalDataSource(context: Context) {
+@Singleton
+class AuthLocalDataSource @Inject constructor(
+    @ApplicationContext context: Context,
+) {
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     fun saveUser(name: String, email: String, password: String) = prefs.edit {

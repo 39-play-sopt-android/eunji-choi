@@ -3,8 +3,9 @@ package org.sopt.play.data.repository
 import org.sopt.play.data.local.datasource.AuthLocalDataSource
 import org.sopt.play.domain.repository.AuthException
 import org.sopt.play.domain.repository.AuthRepository
+import javax.inject.Inject
 
-class AuthRepositoryImpl(
+class AuthRepositoryImpl @Inject constructor(
     private val authLocalDataSource: AuthLocalDataSource,
 ) : AuthRepository {
     override fun register(name: String, email: String, password: String): Result<Unit> {
