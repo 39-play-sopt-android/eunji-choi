@@ -33,7 +33,7 @@ class PostViewModel @Inject constructor(
             is PostIntent.TitleChanged -> changeTitle(intent.title)
             is PostIntent.ContentChanged -> changeContent(intent.content)
             is PostIntent.CompleteClicked -> complete()
-            PostIntent.DeleteClicked -> delete()
+            is PostIntent.DeleteClicked -> delete(intent.id)
         }
     }
 
@@ -75,7 +75,11 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    private fun delete() {
-
+    private fun delete(id: Long) {
+        viewModelScope.launch {
+            postRepository.deletePost(
+                postId = id
+            ).onSuccess { loadPosts(cursor = null) }
+        }
     }
 }

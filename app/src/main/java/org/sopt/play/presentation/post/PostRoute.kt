@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun PostRoute(
@@ -43,6 +43,7 @@ fun PostRoute(
         completeEnabled = state.completeEnabled,
         posts = state.posts,
         onCompleteClick = { viewModel.onIntent(PostIntent.CompleteClicked) },
-        onDeleteClick = { viewModel.onIntent(PostIntent.DeleteClicked) }
+        onDeleteClick = { id ->
+        viewModel.onIntent(PostIntent.DeleteClicked(id)) }
     )
 }

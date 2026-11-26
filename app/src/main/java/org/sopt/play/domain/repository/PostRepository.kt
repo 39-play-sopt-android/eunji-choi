@@ -6,4 +6,6 @@ interface PostRepository {
     suspend fun getPosts(keyword: String? = null, cursor: Int? = null): Result<PostsModel>
 
     suspend fun createPost(title: String, content: String, author: String): Result<Unit>
+
+    suspend fun deletePost(postId: Long): Result<Unit>
 }

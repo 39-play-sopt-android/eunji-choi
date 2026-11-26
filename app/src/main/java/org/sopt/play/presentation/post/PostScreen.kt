@@ -36,10 +36,10 @@ fun PostScreen(
     posts: List<PostCardUiModel>,
     modifier: Modifier = Modifier,
     onCompleteClick: () -> Unit,
-    onDeleteClick: () -> Unit,
+    onDeleteClick: (Long) -> Unit,
 ) {
     var showPostBottomSheet by remember { mutableStateOf(false) }
-    var showPostModal by remember { mutableStateOf(false) }
+    var selectedPostId by remember { mutableStateOf<Long?>(null) }
 
     Box(
         modifier = modifier
@@ -68,7 +68,7 @@ fun PostScreen(
                         content = it.content,
                         author = it.author,
                         createdAt = it.createdAt,
-                        onLongClick = { showPostModal = true }
+                        onLongClick = { selectedPostId = it.id }
                     )
                 }
             }
@@ -99,17 +99,18 @@ fun PostScreen(
         )
     }
 
-    if (showPostModal) {
-        Dialog(onDismissRequest = { showPostModal = false }) {
+    selectedPostId?.let { postId ->
+        Dialog(onDismissRequest = { selectedPostId = null }) {
             PostModal(
                 onCancelClick = {
-                    showPostModal = false
+                    selectedPostId = null
                 },
                 onDeleteClick = {
-                    onDeleteClick()
-                    showPostModal = false
+                    onDeleteClick(postId)
+                    selectedPostId = null
                 },
             )
         }
     }
 }
+

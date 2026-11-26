@@ -33,4 +33,11 @@ class PostRepositoryImpl @Inject constructor(
             )
             check(response.isSuccess) { response.message }
         }
+
+    override suspend fun deletePost(postId: Long): Result<Unit> = suspendRunCatching {
+        val response = postService.deletePost(
+            postId = postId,
+        )
+        check(response.isSuccess) { response.message }
+    }
 }
