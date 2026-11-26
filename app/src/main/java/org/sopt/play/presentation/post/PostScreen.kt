@@ -29,7 +29,7 @@ import org.sopt.play.presentation.post.model.PostCardUiModel
 @Composable
 fun PostScreen(
     paddingValues: PaddingValues,
-    searchState: TextFieldState,
+    keywordState: TextFieldState,
     titleState: TextFieldState,
     contentState: TextFieldState,
     completeEnabled: Boolean,
@@ -51,7 +51,7 @@ fun PostScreen(
                 .padding(horizontal = 16.dp)
         ) {
             PostSearchTextField(
-                state = searchState,
+                state = keywordState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 12.dp),

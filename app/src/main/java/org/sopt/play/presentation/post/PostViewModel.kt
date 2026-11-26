@@ -33,7 +33,7 @@ class PostViewModel @Inject constructor(
 
     fun onIntent(intent: PostIntent) {
         when (intent) {
-            is PostIntent.SearchChanged -> changeSearch(intent.search)
+            is PostIntent.KeywordChanged -> changeKeyword(intent.keyword)
             is PostIntent.TitleChanged -> changeTitle(intent.title)
             is PostIntent.ContentChanged -> changeContent(intent.content)
             is PostIntent.CompleteClicked -> complete()
@@ -50,9 +50,9 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    private fun changeSearch(search: String) {
+    private fun changeKeyword(search: String) {
         _state.update { state ->
-            state.copy(search = search)
+            state.copy(keyword = keyword)
         }
     }
 

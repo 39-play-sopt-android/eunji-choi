@@ -19,7 +19,7 @@ fun PostRoute(
     val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val searchState = rememberTextFieldState()
+    val keywordState = rememberTextFieldState()
     val titleState = rememberTextFieldState()
     val contentState = rememberTextFieldState()
 
@@ -31,9 +31,9 @@ fun PostRoute(
         }
     }
 
-    LaunchedEffect(searchState) {
-        snapshotFlow { searchState.text.toString() }
-            .collect { viewModel.onIntent(PostIntent.SearchChanged(it)) }
+    LaunchedEffect(keywordState) {
+        snapshotFlow { keywordState.text.toString() }
+            .collect { viewModel.onIntent(PostIntent.KeywordChanged(it)) }
     }
 
     LaunchedEffect(titleState) {
@@ -48,7 +48,7 @@ fun PostRoute(
 
     PostScreen(
         paddingValues = paddingValues,
-        searchState = searchState,
+        keywordState = keywordState,
         titleState = titleState,
         contentState = contentState,
         completeEnabled = state.completeEnabled,
