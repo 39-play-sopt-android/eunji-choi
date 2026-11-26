@@ -50,7 +50,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    private fun changeKeyword(search: String) {
+    private fun changeKeyword(keyword: String) {
         _state.update { state ->
             state.copy(keyword = keyword)
         }
