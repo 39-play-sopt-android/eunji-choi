@@ -1,4 +1,22 @@
 package org.sopt.play.data.mapper
 
-class PostMapper {
-}
+import org.sopt.play.data.remote.dto.response.PostResponse
+import org.sopt.play.data.remote.dto.response.PostsResponseDto
+import org.sopt.play.domain.model.PostModel
+import org.sopt.play.domain.model.PostsModel
+
+fun PostsResponseDto.toModel(): PostsModel = PostsModel(
+    posts = posts.map { it.toModel() },
+    nextCursor = nextCursor,
+    hasNext = hasNext,
+)
+
+fun PostResponse.toModel(): PostModel = PostModel(
+    id = id,
+    title = title,
+    content = content,
+    author = author,
+    createdAt = createdAt.toDisplayDate(),
+)
+
+private fun String.toDisplayDate(): String = take(10).replace("-", ".")
