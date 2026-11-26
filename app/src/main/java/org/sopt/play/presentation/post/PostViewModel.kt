@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.sopt.play.domain.repository.AuthRepository
 import org.sopt.play.domain.repository.PostRepository
 import org.sopt.play.presentation.post.model.toUiModel
 import javax.inject.Inject
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val postRepository: PostRepository,
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(PostState())
     val state: StateFlow<PostState> = _state.asStateFlow()
@@ -63,7 +65,14 @@ class PostViewModel @Inject constructor(
     }
 
     private fun complete() {
-
+        val state = _state.value
+        viewModelScope.launch {
+            postRepository.createPost(
+                title = state.title,
+                content = state.content,
+                author = authRepository.getUserName(),
+            ).onSuccess { loadPosts(cursor = null) }
+        }
     }
 
     private fun delete() {

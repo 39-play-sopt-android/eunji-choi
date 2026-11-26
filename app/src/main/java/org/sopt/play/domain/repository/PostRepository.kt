@@ -4,4 +4,6 @@ import org.sopt.play.domain.model.PostsModel
 
 interface PostRepository {
     suspend fun getPosts(keyword: String? = null, cursor: Int? = null): Result<PostsModel>
+
+    suspend fun createPost(title: String, content: String, author: String): Result<Unit>
 }

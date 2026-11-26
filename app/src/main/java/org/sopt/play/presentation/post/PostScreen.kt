@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -91,6 +92,8 @@ fun PostScreen(
             onDismiss = { showPostBottomSheet = false },
             onCompleteClick = {
                 onCompleteClick()
+                titleState.clearText()
+                contentState.clearText()
                 showPostBottomSheet = false
             },
         )
