@@ -3,7 +3,7 @@ package org.sopt.play.data.remote.dto.response
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PostsResponseDto(
+data class PostsResponse(
     val posts: List<PostResponse>,
     val nextCursor: Int?,
     val hasNext: Boolean,

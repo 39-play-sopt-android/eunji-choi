@@ -28,11 +28,19 @@ class AuthLocalDataSource @Inject constructor(
 
     fun getIsLoggedIn(): Boolean = prefs.getBoolean(PREFS_IS_LOGGED_IN_KEY, false)
 
+    fun saveAuthorizationCode(code: String) = prefs.edit {
+        putString(PREFS_AUTHORIZATION_CODE_KEY, code)
+    }
+
+    fun getAuthorizationCode(): String? = prefs.getString(PREFS_AUTHORIZATION_CODE_KEY, null)
+
     companion object {
         private const val PREFS_NAME = "auth_prefs"
         private const val PREFS_NAME_KEY = "nameKey"
         private const val PREFS_EMAIL_KEY = "emailKey"
         private const val PREFS_PASSWORD_KEY = "passwordKey"
         private const val PREFS_IS_LOGGED_IN_KEY = "isLoggedInKey"
+
+        private const val PREFS_AUTHORIZATION_CODE_KEY = "authorizationCodeKey"
     }
 }

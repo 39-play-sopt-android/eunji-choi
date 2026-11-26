@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val startRoute = if (authRepository.isLoggedIn()) Route.MainTab else Route.Login
+        val startRoute = if (authRepository.isLoggedIn() && authRepository.hasAuthorizationCode()) Route.MainTab else Route.Login
         setContent {
             PlaySoptTheme {
                 val backStack = rememberNavBackStack(startRoute)

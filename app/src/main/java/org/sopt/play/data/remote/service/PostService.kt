@@ -1,7 +1,7 @@
 package org.sopt.play.data.remote.service
 
 import org.sopt.play.data.remote.dto.response.BaseResponse
-import org.sopt.play.data.remote.dto.response.PostsResponseDto
+import org.sopt.play.data.remote.dto.response.PostsResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,5 +11,5 @@ interface PostService {
         @Query("keyword") keyword: String? = null,
         @Query("cursor") cursor: Int? = null,
         @Query("size") size: Int = 10,
-    ): BaseResponse<PostsResponseDto>
+    ): BaseResponse<PostsResponse>
 }
