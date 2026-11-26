@@ -62,4 +62,8 @@
     <string name="main_tab_home">홈</string>
     <string name="main_tab_like">찜</string>
     <string name="main_tab_mypage">마이페이지</string>
+
+    <!-- 게시글 -->
+    <string name="post_create_failure">게시글 작성에 실패했어요</string>
+    <string name="post_delete_failure">게시글 삭제에 실패했어요</string>
 </resources>

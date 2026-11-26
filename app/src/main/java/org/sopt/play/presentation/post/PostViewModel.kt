@@ -3,11 +3,14 @@ package org.sopt.play.presentation.post
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.sopt.play.R
 import org.sopt.play.domain.repository.AuthRepository
 import org.sopt.play.domain.repository.PostRepository
 import org.sopt.play.presentation.post.model.toUiModel
@@ -21,10 +24,11 @@ class PostViewModel @Inject constructor(
     private val _state = MutableStateFlow(PostState())
     val state: StateFlow<PostState> = _state.asStateFlow()
 
+    private val _sideEffect = Channel<PostSideEffect>(Channel.BUFFERED)
+    val sideEffect = _sideEffect.receiveAsFlow()
+
     init {
         loadPosts(cursor = null)
-//        _state.update { it.copy(posts = dummyPosts) }
-
     }
 
     fun onIntent(intent: PostIntent) {
@@ -71,7 +75,11 @@ class PostViewModel @Inject constructor(
                 title = state.title,
                 content = state.content,
                 author = authRepository.getUserName(),
-            ).onSuccess { loadPosts(cursor = null) }
+            )
+                .onSuccess { loadPosts(cursor = null) }
+                .onFailure {
+                    _sideEffect.send(PostSideEffect.ShowToast(R.string.post_create_failure))
+                }
         }
     }
 
@@ -79,7 +87,11 @@ class PostViewModel @Inject constructor(
         viewModelScope.launch {
             postRepository.deletePost(
                 postId = id
-            ).onSuccess { loadPosts(cursor = null) }
+            )
+                .onSuccess { loadPosts(cursor = null) }
+                .onFailure {
+                    _sideEffect.send(PostSideEffect.ShowToast(R.string.post_delete_failure))
+                }
         }
     }
 }

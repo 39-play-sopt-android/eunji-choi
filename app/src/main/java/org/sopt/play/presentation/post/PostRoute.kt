@@ -6,19 +6,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.sopt.play.core.common.extension.toast
 
 @Composable
 fun PostRoute(
     paddingValues: PaddingValues,
     viewModel: PostViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val searchState = rememberTextFieldState()
     val titleState = rememberTextFieldState()
     val contentState = rememberTextFieldState()
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { effect ->
+            when (effect) {
+                is PostSideEffect.ShowToast -> context.toast(effect.messageRes)
+            }
+        }
+    }
 
     LaunchedEffect(searchState) {
         snapshotFlow { searchState.text.toString() }
