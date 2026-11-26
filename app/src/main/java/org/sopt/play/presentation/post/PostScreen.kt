@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.sopt.play.presentation.post.component.PostBottomSheet
 import org.sopt.play.presentation.post.component.PostCard
+import org.sopt.play.presentation.post.component.PostEmptyContent
 import org.sopt.play.presentation.post.component.PostFloatingButton
 import org.sopt.play.presentation.post.component.PostModal
 import org.sopt.play.presentation.post.component.PostSearchTextField
@@ -33,8 +34,10 @@ fun PostScreen(
     titleState: TextFieldState,
     contentState: TextFieldState,
     completeEnabled: Boolean,
+    isLoading: Boolean,
     posts: List<PostCardUiModel>,
     modifier: Modifier = Modifier,
+    onSearchClick: () -> Unit,
     onCompleteClick: () -> Unit,
     onDeleteClick: (Long) -> Unit,
 ) {
@@ -52,28 +55,33 @@ fun PostScreen(
         ) {
             PostSearchTextField(
                 state = keywordState,
+                onSearch = onSearchClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 12.dp),
             )
 
-            LazyColumn(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(bottom = 152.dp),
-            ) {
-                items(posts) {
-                    PostCard(
-                        title = it.title,
-                        content = it.content,
-                        author = it.author,
-                        createdAt = it.createdAt,
-                        onLongClick = { selectedPostId = it.id }
-                    )
+            if (posts.isEmpty() && !isLoading) {
+                PostEmptyContent(
+                    modifier = Modifier.weight(1f)
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(bottom = 152.dp),
+                ) {
+                    items(posts) {
+                        PostCard(
+                            title = it.title,
+                            content = it.content,
+                            author = it.author,
+                            createdAt = it.createdAt,
+                            onLongClick = { selectedPostId = it.id }
+                        )
+                    }
                 }
             }
-
-
         }
 
         PostFloatingButton(

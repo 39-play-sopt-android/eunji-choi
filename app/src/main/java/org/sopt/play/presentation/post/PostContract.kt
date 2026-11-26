@@ -8,6 +8,7 @@ data class PostState(
     val title: String = "",
     val content: String = "",
     val posts: List<PostCardUiModel> = emptyList(),
+    val isLoading: Boolean = true,
 ) {
     val completeEnabled: Boolean
         get() = title.isNotBlank() && content.isNotBlank()
@@ -19,6 +20,7 @@ sealed interface PostIntent {
     data class ContentChanged(val content: String) : PostIntent
     data object CompleteClicked : PostIntent
     data class DeleteClicked(val id: Long) : PostIntent
+    data object SearchClicked: PostIntent
 }
 
 sealed interface PostSideEffect {

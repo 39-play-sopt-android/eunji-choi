@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -27,19 +26,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.R
+import org.sopt.play.core.common.extension.noRippleClickable
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @Composable
 fun PostSearchTextField(
     state: TextFieldState,
+    onSearch: () -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = stringResource(R.string.post_search_placeholder),
     lineLimits: TextFieldLineLimits = TextFieldLineLimits.SingleLine,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    onKeyboardAction: KeyboardActionHandler? = null,
 ) {
     val isEmpty by remember(state) { derivedStateOf { state.text.isEmpty() } }
 
@@ -56,8 +56,8 @@ fun PostSearchTextField(
         lineLimits = lineLimits,
         textStyle = textStyle.copy(color = textColor),
         cursorBrush = SolidColor(value = textColor),
-        keyboardOptions = keyboardOptions,
-        onKeyboardAction = onKeyboardAction,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        onKeyboardAction = { onSearch() },
         decorator = { innerTextField ->
             Row(
                 modifier = Modifier
@@ -93,6 +93,7 @@ fun PostSearchTextField(
                     painter = painterResource(R.drawable.ic_search_28),
                     tint = PlaySoptTheme.colors.gray3,
                     contentDescription = stringResource(R.string.post_search_icon_description),
+                    modifier = Modifier.noRippleClickable(onClick = onSearch)
                 )
             }
         },
@@ -111,10 +112,12 @@ private fun PostSearchTextFieldPreview() {
         ) {
             PostSearchTextField(
                 state = rememberTextFieldState(),
+                onSearch = {}
             )
 
             PostSearchTextField(
                 state = rememberTextFieldState("솝트"),
+                onSearch = {}
             )
         }
     }
