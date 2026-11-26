@@ -57,6 +57,7 @@ private fun PostBottomSheetContent(
             label = "제목",
             state = titleState,
             placeholder = "제목을 입력하세요.",
+            maxLength = 20,
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -65,6 +66,7 @@ private fun PostBottomSheetContent(
             label = "본문",
             state = contentState,
             placeholder = "본문을 입력하세요.",
+            maxLength = 1000,
         )
 
         Spacer(modifier = Modifier.height(20.dp))

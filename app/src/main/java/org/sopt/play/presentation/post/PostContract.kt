@@ -9,8 +9,7 @@ data class PostState(
     val posts: List<PostCardUiModel> = emptyList(),
 ) {
     val completeEnabled: Boolean
-        get() = title.isNotBlank() && content.isNotBlank() &&
-                title.length <= 20 && content.length <= 1000
+        get() = title.isNotBlank() && content.isNotBlank()
 }
 
 sealed interface PostIntent {
