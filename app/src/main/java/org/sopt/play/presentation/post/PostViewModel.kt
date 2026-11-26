@@ -1,18 +1,28 @@
 package org.sopt.play.presentation.post
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import org.sopt.play.presentation.post.model.dummyPosts
+import kotlinx.coroutines.launch
+import org.sopt.play.domain.repository.PostRepository
+import org.sopt.play.presentation.post.model.toUiModel
+import javax.inject.Inject
 
-class PostViewModel() : ViewModel() {
+@HiltViewModel
+class PostViewModel @Inject constructor(
+    private val postRepository: PostRepository,
+) : ViewModel() {
     private val _state = MutableStateFlow(PostState())
     val state: StateFlow<PostState> = _state.asStateFlow()
 
     init {
-        _state.update { it.copy(posts = dummyPosts) }
+        loadPosts(cursor = null)
+//        _state.update { it.copy(posts = dummyPosts) }
+
     }
 
     fun onIntent(intent: PostIntent) {
@@ -22,6 +32,15 @@ class PostViewModel() : ViewModel() {
             is PostIntent.ContentChanged -> changeContent(intent.content)
             is PostIntent.CompleteClicked -> complete()
             PostIntent.DeleteClicked -> delete()
+        }
+    }
+
+    fun loadPosts(cursor: Int?){
+        viewModelScope.launch {
+            postRepository.getPosts(cursor = cursor)
+                .onSuccess { result ->
+                    _state.update { it.copy(posts = result.posts.map { post -> post.toUiModel() }) }
+                }
         }
     }
 

@@ -58,7 +58,8 @@ fun PostScreen(
 
             LazyColumn(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(bottom = 152.dp),
             ) {
                 items(posts) {
                     PostCard(
