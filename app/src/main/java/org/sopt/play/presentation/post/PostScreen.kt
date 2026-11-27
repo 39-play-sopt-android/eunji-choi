@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
@@ -31,21 +32,25 @@ import org.sopt.play.presentation.post.model.PostCardUiModel
 @Composable
 fun PostScreen(
     paddingValues: PaddingValues,
+    listState: LazyListState,
     keywordState: TextFieldState,
     titleState: TextFieldState,
     contentState: TextFieldState,
     completeEnabled: Boolean,
+    editingPost: PostCardUiModel?,
+    editCompleteEnabled: Boolean,
     isLoading: Boolean,
     posts: List<PostCardUiModel>,
-    modifier: Modifier = Modifier,
     onSearchClick: () -> Unit,
     onCreateClick: () -> Unit,
-    onEditClick: (Long) -> Unit,
+    onEditStart: (Long) -> Unit,
+    onEditDismiss: () -> Unit,
+    onEditClick: () -> Unit,
     onDeleteClick: (Long) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var showCreatePostBottomSheet by remember { mutableStateOf(false) }
     var deletePostId by remember { mutableStateOf<Long?>(null) }
-    var editPostId by remember { mutableStateOf<Long?>(null) }
 
     Box(
         modifier = modifier
@@ -70,11 +75,12 @@ fun PostScreen(
                 )
             } else {
                 LazyColumn(
+                    state = listState,
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     contentPadding = PaddingValues(bottom = 152.dp),
                 ) {
-                    items(posts) {
+                    items(posts, key = { it.id }) {
                         PostCard(
                             title = it.title,
                             content = it.content,
@@ -83,7 +89,7 @@ fun PostScreen(
                             onShortClick = {
                                 titleState.setTextAndPlaceCursorAtEnd(it.title)
                                 contentState.setTextAndPlaceCursorAtEnd(it.content)
-                                editPostId = it.id
+                                onEditStart(it.id)
                             },
                             onLongClick = { deletePostId = it.id }
                         )
@@ -115,13 +121,7 @@ fun PostScreen(
         )
     }
 
-    editPostId?.let { postId ->
-        val originalPost = posts.find { it.id == postId }
-        val editCompleteEnabled = completeEnabled &&
-                originalPost != null &&
-                (titleState.text.toString() != originalPost.title ||
-                        contentState.text.toString() != originalPost.content)
-
+    editingPost?.let {
         PostBottomSheet(
             titleState = titleState,
             contentState = contentState,
@@ -129,13 +129,12 @@ fun PostScreen(
             onDismiss = {
                 titleState.clearText()
                 contentState.clearText()
-                editPostId = null
+                onEditDismiss()
             },
             onCompleteClick = {
-                onEditClick(postId)
+                onEditClick()
                 titleState.clearText()
                 contentState.clearText()
-                editPostId = null
             },
         )
     }

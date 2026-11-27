@@ -49,23 +49,30 @@ class PostViewModel @Inject constructor(
             is PostIntent.TitleChanged -> changeTitle(intent.title)
             is PostIntent.ContentChanged -> changeContent(intent.content)
             is PostIntent.CreateClicked -> create()
-            is PostIntent.EditClicked -> edit(intent.id)
+            is PostIntent.EditStarted -> startEdit(intent.id)
+            is PostIntent.EditDismissed -> endEdit()
+            is PostIntent.EditClicked -> edit()
             is PostIntent.DeleteClicked -> delete(intent.id)
             is PostIntent.SearchClicked -> onSearchClick()
+            is PostIntent.LoadMore -> loadMorePosts()
         }
     }
 
-    private fun loadPosts(keyword: String? = null, cursor: Int? = null){
+    private fun loadPosts(keyword: String? = null) {
         viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+
             postRepository.getPosts(
                 keyword = keyword?.trim()?.ifBlank { null },
-                cursor = cursor
+                cursor = null
             )
                 .onSuccess { result ->
                     _state.update { it.copy(
                         posts = result.posts.map { post ->
                             post.toUiModel()
                         },
+                        nextCursor = result.nextCursor,
+                        hasNext = result.hasNext,
                         isLoading = false,
                     )
                     }
@@ -74,6 +81,35 @@ class PostViewModel @Inject constructor(
             _state.update { it.copy(isLoading = false) }
             _sideEffect.send(PostSideEffect.ShowToast(R.string.post_load_failure))
         }
+        }
+    }
+
+    private fun loadMorePosts() {
+        val state = _state.value
+
+        if (!state.hasNext || state.isLoadingMore || state.isLoading) return
+
+        viewModelScope.launch {
+            _state.update { it.copy(isLoadingMore = true) }
+
+            postRepository.getPosts(
+                keyword = state.keyword.trim().ifBlank { null },
+                cursor = state.nextCursor,
+            )
+                .onSuccess { result ->
+                    _state.update {
+                        it.copy(
+                            posts = it.posts + result.posts.map { post -> post.toUiModel() },
+                            nextCursor = result.nextCursor,
+                            hasNext = result.hasNext,
+                            isLoadingMore = false,
+                        )
+                    }
+                }
+                .onFailure {
+                    _state.update { it.copy(isLoadingMore = false) }
+                    _sideEffect.send(PostSideEffect.ShowToast(R.string.post_load_failure))
+                }
         }
     }
 
@@ -103,25 +139,36 @@ class PostViewModel @Inject constructor(
                 content = state.content,
                 author = authRepository.getUserName(),
             )
-                .onSuccess { loadPosts() }
+                .onSuccess { loadPosts(keyword = _state.value.keyword) }
                 .onFailure {
                     _sideEffect.send(PostSideEffect.ShowToast(R.string.post_create_failure))
                 }
         }
     }
 
-    private fun edit(id: Long) {
+    private fun startEdit(id: Long) {
+        _state.update { state ->
+            state.copy(editingPost = state.posts.find { it.id == id })
+        }
+    }
+
+    private fun endEdit() {
+        _state.update { it.copy(editingPost = null) }
+    }
+
+    private fun edit() {
         val state = _state.value
+        val post = state.editingPost ?: return
+        endEdit()
+
         viewModelScope.launch {
             postRepository.editPost(
-                postId = id,
+                postId = post.id,
                 title = state.title,
                 content = state.content,
             )
-                .onSuccess { loadPosts() }
-                .onFailure {
-                    _sideEffect.send(PostSideEffect.ShowToast(R.string.post_edit_failure))
-                }
+                .onSuccess { loadPosts(keyword = state.keyword) }
+                .onFailure { _sideEffect.send(PostSideEffect.ShowToast(R.string.post_edit_failure)) }
         }
     }
 
@@ -130,7 +177,7 @@ class PostViewModel @Inject constructor(
             postRepository.deletePost(
                 postId = id
             )
-                .onSuccess { loadPosts() }
+                .onSuccess { loadPosts(keyword = _state.value.keyword) }
                 .onFailure {
                     _sideEffect.send(PostSideEffect.ShowToast(R.string.post_delete_failure))
                 }
