@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,6 +38,8 @@ class PostViewModel @Inject constructor(
     val sideEffect = _sideEffect.receiveAsFlow()
 
     private val searchClicks = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+
+    private var submitJob: Job? = null
 
     init {
         loadPosts()
@@ -132,8 +135,10 @@ class PostViewModel @Inject constructor(
     }
 
     private fun create() {
+        if (submitJob?.isActive == true) return
+
         val state = _state.value
-        viewModelScope.launch {
+        submitJob = viewModelScope.launch {
             postRepository.createPost(
                 title = state.title,
                 content = state.content,
@@ -157,11 +162,13 @@ class PostViewModel @Inject constructor(
     }
 
     private fun edit() {
+        if (submitJob?.isActive == true) return
+
         val state = _state.value
         val post = state.editingPost ?: return
         endEdit()
 
-        viewModelScope.launch {
+        submitJob = viewModelScope.launch {
             postRepository.editPost(
                 postId = post.id,
                 title = state.title,
@@ -173,7 +180,9 @@ class PostViewModel @Inject constructor(
     }
 
     private fun delete(id: Long) {
-        viewModelScope.launch {
+        if (submitJob?.isActive == true) return
+
+        submitJob = viewModelScope.launch {
             postRepository.deletePost(
                 postId = id
             )
