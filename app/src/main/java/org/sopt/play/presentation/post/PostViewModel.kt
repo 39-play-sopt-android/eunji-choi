@@ -48,7 +48,8 @@ class PostViewModel @Inject constructor(
             is PostIntent.KeywordChanged -> changeKeyword(intent.keyword)
             is PostIntent.TitleChanged -> changeTitle(intent.title)
             is PostIntent.ContentChanged -> changeContent(intent.content)
-            is PostIntent.CompleteClicked -> complete()
+            is PostIntent.CreateClicked -> create()
+            is PostIntent.EditClicked -> edit(intent.id)
             is PostIntent.DeleteClicked -> delete(intent.id)
             is PostIntent.SearchClicked -> onSearchClick()
         }
@@ -94,7 +95,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    private fun complete() {
+    private fun create() {
         val state = _state.value
         viewModelScope.launch {
             postRepository.createPost(
@@ -105,6 +106,21 @@ class PostViewModel @Inject constructor(
                 .onSuccess { loadPosts() }
                 .onFailure {
                     _sideEffect.send(PostSideEffect.ShowToast(R.string.post_create_failure))
+                }
+        }
+    }
+
+    private fun edit(id: Long) {
+        val state = _state.value
+        viewModelScope.launch {
+            postRepository.editPost(
+                postId = id,
+                title = state.title,
+                content = state.content,
+            )
+                .onSuccess { loadPosts() }
+                .onFailure {
+                    _sideEffect.send(PostSideEffect.ShowToast(R.string.post_edit_failure))
                 }
         }
     }

@@ -55,8 +55,8 @@ fun PostRoute(
         isLoading = state.isLoading,
         posts = state.posts,
         onSearchClick = { viewModel.onIntent(PostIntent.SearchClicked) },
-        onCompleteClick = { viewModel.onIntent(PostIntent.CompleteClicked) },
-        onDeleteClick = { id ->
-        viewModel.onIntent(PostIntent.DeleteClicked(id)) }
+        onCreateClick = { viewModel.onIntent(PostIntent.CreateClicked) },
+        onEditClick = { id -> viewModel.onIntent(PostIntent.EditClicked(id))},
+        onDeleteClick = { id -> viewModel.onIntent(PostIntent.DeleteClicked(id)) }
     )
 }

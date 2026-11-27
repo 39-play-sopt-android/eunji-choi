@@ -65,6 +65,7 @@
 
     <!-- 게시글 -->
     <string name="post_create_failure">게시글 작성에 실패했어요</string>
+    <string name="post_edit_failure">게시글 수정에 실패했어요</string>
     <string name="post_delete_failure">게시글 삭제에 실패했어요</string>
     <string name="post_create_button_description">게시글 작성</string>
 

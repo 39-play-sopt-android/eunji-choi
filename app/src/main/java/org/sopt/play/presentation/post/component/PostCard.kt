@@ -1,7 +1,6 @@
 package org.sopt.play.presentation.post.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,9 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.sopt.play.core.common.extension.noRippleCombinedClickable
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @Composable
@@ -28,6 +27,7 @@ fun PostCard(
     author: String,
     createdAt: String,
     modifier: Modifier = Modifier,
+    onShortClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
     Column(
@@ -35,9 +35,10 @@ fun PostCard(
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(20.dp))
             .background(color = PlaySoptTheme.colors.gray1)
-            .pointerInput(Unit) {
-                detectTapGestures(onLongPress = { onLongClick() })
-            }
+            .noRippleCombinedClickable(
+                onLongClick = onLongClick,
+                onClick = onShortClick,
+            )
             .padding(20.dp),
     ) {
         Row(
@@ -97,6 +98,7 @@ private fun PostCardListPreview() {
                 author = "솝트",
                 createdAt = "2026.11.25",
                 onLongClick = {},
+                onShortClick = {}
             )
         }
     }

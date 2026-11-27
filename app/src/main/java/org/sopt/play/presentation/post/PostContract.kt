@@ -18,7 +18,8 @@ sealed interface PostIntent {
     data class KeywordChanged(val keyword: String) : PostIntent
     data class TitleChanged(val title: String) : PostIntent
     data class ContentChanged(val content: String) : PostIntent
-    data object CompleteClicked : PostIntent
+    data object CreateClicked : PostIntent
+    data class EditClicked(val id: Long) : PostIntent
     data class DeleteClicked(val id: Long) : PostIntent
     data object SearchClicked: PostIntent
 }

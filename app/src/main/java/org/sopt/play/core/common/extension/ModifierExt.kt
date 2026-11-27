@@ -3,6 +3,7 @@ package org.sopt.play.core.common.extension
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -109,3 +110,15 @@ fun Modifier.addFocusCleaner(focusManager: FocusManager): Modifier {
         )
     }
 }
+
+fun Modifier.noRippleCombinedClickable(
+    enabled: Boolean = true,
+    onLongClick: (() -> Unit)? = null,
+    onClick: () -> Unit,
+): Modifier = combinedClickable(
+    interactionSource = null,
+    indication = null,
+    enabled = enabled,
+    onLongClick = onLongClick,
+    onClick = onClick,
+)

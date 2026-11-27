@@ -3,6 +3,7 @@ package org.sopt.play.data.repository
 import org.sopt.play.core.util.suspendRunCatching
 import org.sopt.play.data.mapper.toModel
 import org.sopt.play.data.remote.dto.request.CreatePostRequest
+import org.sopt.play.data.remote.dto.request.EditPostRequest
 import org.sopt.play.data.remote.service.PostService
 import org.sopt.play.domain.model.PostsModel
 import org.sopt.play.domain.repository.PostRepository
@@ -29,6 +30,21 @@ class PostRepositoryImpl @Inject constructor(
                     title = title,
                     content = content,
                     author = author
+                ),
+            )
+            check(response.isSuccess) { response.message }
+        }
+
+    override suspend fun editPost(
+        postId: Long,
+        title: String,
+        content: String
+    ): Result<Unit> = suspendRunCatching {
+            val response = postService.editPost(
+                postId = postId,
+                request = EditPostRequest(
+                    title = title,
+                    content = content,
                 ),
             )
             check(response.isSuccess) { response.message }

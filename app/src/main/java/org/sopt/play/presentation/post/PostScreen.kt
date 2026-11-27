@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,11 +39,13 @@ fun PostScreen(
     posts: List<PostCardUiModel>,
     modifier: Modifier = Modifier,
     onSearchClick: () -> Unit,
-    onCompleteClick: () -> Unit,
+    onCreateClick: () -> Unit,
+    onEditClick: (Long) -> Unit,
     onDeleteClick: (Long) -> Unit,
 ) {
-    var showPostBottomSheet by remember { mutableStateOf(false) }
-    var selectedPostId by remember { mutableStateOf<Long?>(null) }
+    var showCreatePostBottomSheet by remember { mutableStateOf(false) }
+    var deletePostId by remember { mutableStateOf<Long?>(null) }
+    var editPostId by remember { mutableStateOf<Long?>(null) }
 
     Box(
         modifier = modifier
@@ -77,7 +80,12 @@ fun PostScreen(
                             content = it.content,
                             author = it.author,
                             createdAt = it.createdAt,
-                            onLongClick = { selectedPostId = it.id }
+                            onShortClick = {
+                                titleState.setTextAndPlaceCursorAtEnd(it.title)
+                                contentState.setTextAndPlaceCursorAtEnd(it.content)
+                                editPostId = it.id
+                            },
+                            onLongClick = { deletePostId = it.id }
                         )
                     }
                 }
@@ -85,37 +93,62 @@ fun PostScreen(
         }
 
         PostFloatingButton(
-            onClick = { showPostBottomSheet = true },
+            onClick = { showCreatePostBottomSheet = true },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(end = 16.dp, bottom = 20.dp),
         )
     }
 
-    if (showPostBottomSheet) {
+    if (showCreatePostBottomSheet) {
         PostBottomSheet(
             titleState = titleState,
             contentState = contentState,
             completeEnabled = completeEnabled,
-            onDismiss = { showPostBottomSheet = false },
+            onDismiss = { showCreatePostBottomSheet = false },
             onCompleteClick = {
-                onCompleteClick()
+                onCreateClick()
                 titleState.clearText()
                 contentState.clearText()
-                showPostBottomSheet = false
+                showCreatePostBottomSheet = false
             },
         )
     }
 
-    selectedPostId?.let { postId ->
-        Dialog(onDismissRequest = { selectedPostId = null }) {
+    editPostId?.let { postId ->
+        val originalPost = posts.find { it.id == postId }
+        val editCompleteEnabled = completeEnabled &&
+                originalPost != null &&
+                (titleState.text.toString() != originalPost.title ||
+                        contentState.text.toString() != originalPost.content)
+
+        PostBottomSheet(
+            titleState = titleState,
+            contentState = contentState,
+            completeEnabled = editCompleteEnabled,
+            onDismiss = {
+                titleState.clearText()
+                contentState.clearText()
+                editPostId = null
+            },
+            onCompleteClick = {
+                onEditClick(postId)
+                titleState.clearText()
+                contentState.clearText()
+                editPostId = null
+            },
+        )
+    }
+
+    deletePostId?.let { postId ->
+        Dialog(onDismissRequest = { deletePostId = null }) {
             PostModal(
                 onCancelClick = {
-                    selectedPostId = null
+                    deletePostId = null
                 },
                 onDeleteClick = {
                     onDeleteClick(postId)
-                    selectedPostId = null
+                    deletePostId = null
                 },
             )
         }
