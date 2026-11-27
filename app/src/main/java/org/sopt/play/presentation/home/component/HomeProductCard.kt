@@ -24,11 +24,11 @@ import org.sopt.play.R
 import org.sopt.play.core.common.extension.noRippleClickable
 import org.sopt.play.core.designsystem.component.asyncimage.PlayAsyncImage
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
-import org.sopt.play.domain.model.ProductModel
+import org.sopt.play.presentation.home.model.ProductUiModel
 
 @Composable
 fun HomeProductCard(
-    item: ProductModel,
+    item: ProductUiModel,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -97,7 +97,7 @@ fun HomeProductCard(
                 )
 
                 Text(
-                    text = "%,d".format(item.price),
+                    text = item.price,
                     style = PlaySoptTheme.typography.m14,
                     color = PlaySoptTheme.colors.black,
                 )
@@ -113,22 +113,22 @@ fun HomeProductCard(
 @Composable
 private fun HomeProductCardPreview() {
     PlaySoptTheme {
-        val dummyItem = ProductModel(
+        val dummyItem = ProductUiModel(
             id = "1",
             imageUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_autumn.png",
             storeName = "슬로우앤드",
             productName = "[\uD83C\uDF41가을/3기장선택!]",
             discountRate = 50,
-            price = 26820
+            price = "26,820"
         )
 
-        val dummyLongItem = ProductModel(
+        val dummyLongItem = ProductUiModel(
             id = "2",
             imageUrl = "https://raw.githubusercontent.com/chldmswll/play-sopt-assets/main/img_home_autumn.png",
             storeName = "슬로우앤드슬로우앤드슬로우앤드슬로우앤드슬로우앤드슬로우앤드슬로우앤드",
             productName = "[\uD83C\uDF41가을/3기장선택!] made. 모먼트 투커버 올데이슬랙스 (+숏/베이직/롱ver) - 4 size",
             discountRate = 50,
-            price = 26820
+            price = "26,820"
         )
 
         Row(

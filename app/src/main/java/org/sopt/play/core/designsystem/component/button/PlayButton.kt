@@ -13,27 +13,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.core.common.extension.noRippleClickable
+import org.sopt.play.core.designsystem.component.model.PlayButtonType
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
 
 @Composable
 fun PlayButton(
     text: String,
+    type: PlayButtonType,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
 ) {
-    val backgroundColor = if (enabled) PlaySoptTheme.colors.black else PlaySoptTheme.colors.gray1
-    val textColor = if (enabled) PlaySoptTheme.colors.gray1 else PlaySoptTheme.colors.gray3
+    val enabled = if(type == PlayButtonType.DISABLED) false else true
 
     Text(
         text = text,
-        color = textColor,
+        color = type.textColor(),
         style = PlaySoptTheme.typography.sb14,
         textAlign = TextAlign.Center,
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = backgroundColor,
+                color = type.backgroundColor(),
                 shape = CircleShape
             )
             .noRippleClickable(
@@ -56,13 +56,20 @@ private fun PlayButtonPreview() {
         ) {
             PlayButton(
                 text = "로그인",
+                type = PlayButtonType.PRIMARY_ACTIVE,
                 onClick = {},
             )
 
             PlayButton(
                 text = "로그인",
+                type = PlayButtonType.SECONDARY_ACTIVE,
                 onClick = {},
-                enabled = false,
+            )
+
+            PlayButton(
+                text = "로그인",
+                type = PlayButtonType.DISABLED,
+                onClick = {},
             )
         }
     }

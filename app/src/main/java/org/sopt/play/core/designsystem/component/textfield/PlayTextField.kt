@@ -18,10 +18,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,6 +50,7 @@ fun PlayTextField(
     lineLimits: TextFieldLineLimits = TextFieldLineLimits.SingleLine,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onKeyboardAction: KeyboardActionHandler? = null,
+    maxLength: Int? = null,
 ) {
     val isEmpty by remember(state) { derivedStateOf { state.text.isEmpty() } }
 
@@ -67,6 +70,9 @@ fun PlayTextField(
 
     BasicTextField(
         state = state,
+        inputTransformation = maxLength?.let {
+            InputTransformation.maxLength(it)
+        },
         interactionSource = interactionSource,
         modifier = modifier.fillMaxWidth(),
         lineLimits = lineLimits,

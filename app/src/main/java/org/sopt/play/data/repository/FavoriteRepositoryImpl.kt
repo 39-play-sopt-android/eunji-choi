@@ -9,8 +9,9 @@ import org.sopt.play.data.mapper.toEntity
 import org.sopt.play.data.mapper.toModel
 import org.sopt.play.domain.model.ProductModel
 import org.sopt.play.domain.repository.FavoriteRepository
+import javax.inject.Inject
 
-class FavoriteRepositoryImpl(
+class FavoriteRepositoryImpl @Inject constructor(
     private val favoriteDao: FavoriteDao,
 ) : FavoriteRepository {
     override fun getFavorites(): Flow<Result<List<ProductModel>>> =

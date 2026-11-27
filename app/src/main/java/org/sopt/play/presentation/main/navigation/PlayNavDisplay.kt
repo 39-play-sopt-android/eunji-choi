@@ -13,6 +13,7 @@ import org.sopt.play.core.common.navigation.Route
 import org.sopt.play.presentation.auth.login.LoginRoute
 import org.sopt.play.presentation.auth.register.RegisterRoute
 import org.sopt.play.presentation.maintab.MainTabRoute
+import org.sopt.play.presentation.post.PostRoute
 
 @Composable
 fun PlayNavDisplay(
@@ -51,7 +52,16 @@ fun PlayNavDisplay(
 
             entry<Route.MainTab> {
                 MainTabRoute(
-                    paddingValues = paddingValues
+                    paddingValues = paddingValues,
+                    navigateToPost = {
+                        backStack.add(Route.Post)
+                    }
+                )
+            }
+
+            entry<Route.Post> {
+                PostRoute(
+                    paddingValues = paddingValues,
                 )
             }
         }

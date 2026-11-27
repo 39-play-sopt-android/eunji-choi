@@ -9,13 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
-import org.sopt.play.domain.model.ProductModel
 import org.sopt.play.presentation.home.component.HomeProductCard
+import org.sopt.play.presentation.home.model.ProductUiModel
 import org.sopt.play.presentation.home.preview.HomePreviewData
 
 @Composable
 fun HomeProductRow(
-    rowItems: List<ProductModel>,
+    rowItems: List<ProductUiModel>,
     favoriteIds: Set<String>,
     onFavoriteClick: (id: String) -> Unit,
     modifier: Modifier = Modifier,

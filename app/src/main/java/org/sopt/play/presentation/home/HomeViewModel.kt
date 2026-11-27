@@ -2,6 +2,7 @@ package org.sopt.play.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,21 +14,26 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.sopt.play.di.RepositoryModule
+import org.sopt.play.domain.model.ProductModel
 import org.sopt.play.domain.repository.AuthRepository
 import org.sopt.play.domain.repository.BannerRepository
 import org.sopt.play.domain.repository.FavoriteRepository
 import org.sopt.play.domain.repository.ProductRepository
+import org.sopt.play.presentation.home.model.toUiModel
+import javax.inject.Inject
 
-class HomeViewModel(
-    private val authRepository: AuthRepository = RepositoryModule.authRepository,
-    private val favoriteRepository: FavoriteRepository = RepositoryModule.favoriteRepository,
-    private val productRepository: ProductRepository = RepositoryModule.productRepository,
-    private val bannerRepository: BannerRepository = RepositoryModule.bannerRepository,
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
+    private val favoriteRepository: FavoriteRepository,
+    private val productRepository: ProductRepository,
+    private val bannerRepository: BannerRepository,
 ) : ViewModel() {
     private val contentState = MutableStateFlow(
         HomeState(userName = authRepository.getUserName())
     )
+
+    private var productModels: List<ProductModel> = emptyList()
 
     private val favoriteIds: Flow<Set<String>> = favoriteRepository.getFavorites()
         .mapNotNull { result -> result.getOrNull() }
@@ -48,32 +54,34 @@ class HomeViewModel(
     }
 
     fun onIntent(intent: HomeIntent) {
-        when (intent) {
-            is HomeIntent.FavoriteClicked -> toggleFavorite(intent.id)
-            HomeIntent.SearchClicked -> Unit
-        }
+        if (intent is HomeIntent.FavoriteClicked) toggleFavorite(intent.id)
     }
 
     private fun loadBanners() {
         viewModelScope.launch {
             bannerRepository.getBanners()
-                .onSuccess { banners -> contentState.update { it.copy(banners = banners) } }
+                .onSuccess { banners ->
+                    contentState.update { it.copy(banners = banners.map { banner -> banner.toUiModel() }) }
+                }
         }
     }
 
     private fun loadProducts() {
         viewModelScope.launch {
             productRepository.getProducts()
-                .onSuccess { products -> contentState.update { it.copy(products = products) } }
+                .onSuccess { products ->
+                    productModels = products
+                    contentState.update { it.copy(products = products.map { product -> product.toUiModel() }) }
+                }
         }
     }
 
     private fun toggleFavorite(id: String) {
-        val current = state.value
-        val product = current.products.find { it.id == id } ?: return
+        val product = productModels.find { it.id == id } ?: return
+        val isFavorite = id in state.value.favoriteIds
 
         viewModelScope.launch {
-            if (id in current.favoriteIds) favoriteRepository.delete(id)
+            if (isFavorite) favoriteRepository.delete(id)
             else favoriteRepository.insert(product)
         }
     }

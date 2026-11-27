@@ -2,8 +2,14 @@ package org.sopt.play.data.local.datasource
 
 import android.content.Context
 import androidx.core.content.edit
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AuthLocalDataSource(context: Context) {
+@Singleton
+class AuthLocalDataSource @Inject constructor(
+    @ApplicationContext context: Context,
+) {
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     fun saveUser(name: String, email: String, password: String) = prefs.edit {
@@ -22,11 +28,19 @@ class AuthLocalDataSource(context: Context) {
 
     fun getIsLoggedIn(): Boolean = prefs.getBoolean(PREFS_IS_LOGGED_IN_KEY, false)
 
+    fun saveAuthorizationCode(code: String) = prefs.edit {
+        putString(PREFS_AUTHORIZATION_CODE_KEY, code)
+    }
+
+    fun getAuthorizationCode(): String? = prefs.getString(PREFS_AUTHORIZATION_CODE_KEY, null)
+
     companion object {
         private const val PREFS_NAME = "auth_prefs"
         private const val PREFS_NAME_KEY = "nameKey"
         private const val PREFS_EMAIL_KEY = "emailKey"
         private const val PREFS_PASSWORD_KEY = "passwordKey"
         private const val PREFS_IS_LOGGED_IN_KEY = "isLoggedInKey"
+
+        private const val PREFS_AUTHORIZATION_CODE_KEY = "authorizationCodeKey"
     }
 }

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import org.sopt.play.R
 import org.sopt.play.core.designsystem.component.button.PlayButton
+import org.sopt.play.core.designsystem.component.model.PlayButtonType
 import org.sopt.play.core.designsystem.component.textfield.PlayTextField
 import org.sopt.play.core.designsystem.preview.FontScalePreviews
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
@@ -132,8 +133,8 @@ fun RegisterScreen(
 
         PlayButton(
             text = stringResource(R.string.register_button),
+            type = if (registerEnabled) PlayButtonType.PRIMARY_ACTIVE else PlayButtonType.DISABLED,
             onClick = onRegisterClick,
-            enabled = registerEnabled
         )
     }
 }

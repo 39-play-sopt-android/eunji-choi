@@ -23,11 +23,11 @@ import androidx.compose.ui.unit.dp
 import org.sopt.play.R
 import org.sopt.play.core.designsystem.preview.FontScalePreviews
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
-import org.sopt.play.domain.model.BannerModel
-import org.sopt.play.domain.model.ProductModel
 import org.sopt.play.presentation.home.component.HomeTopBar
+import org.sopt.play.presentation.home.model.BannerUiModel
 import org.sopt.play.presentation.home.model.HomeCategory
 import org.sopt.play.presentation.home.model.HomeMenu
+import org.sopt.play.presentation.home.model.ProductUiModel
 import org.sopt.play.presentation.home.preview.HomePreviewData
 import org.sopt.play.presentation.home.section.HomeBannerSection
 import org.sopt.play.presentation.home.section.HomeCategorySection
@@ -38,8 +38,8 @@ import org.sopt.play.presentation.home.section.HomeProductRow
 fun HomeScreen(
     userName: String,
     paddingValues: PaddingValues,
-    banners: List<BannerModel>,
-    products: List<ProductModel>,
+    banners: List<BannerUiModel>,
+    products: List<ProductUiModel>,
     favoriteIds: Set<String>,
     onFavoriteClick: (id: String) -> Unit,
     onSearchClick: () -> Unit,

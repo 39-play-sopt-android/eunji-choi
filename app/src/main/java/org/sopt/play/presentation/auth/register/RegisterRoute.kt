@@ -12,14 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.sopt.play.core.common.extension.ObserveAsEvents
 import org.sopt.play.core.common.extension.toast
 
 @Composable
 fun RegisterRoute(
     paddingValues: PaddingValues,
     navigateToLogin: () -> Unit,
-    viewModel: RegisterViewModel = viewModel()
+    viewModel: RegisterViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -49,12 +50,10 @@ fun RegisterRoute(
             .collect { viewModel.onIntent(RegisterIntent.PasswordConfirmChanged(it)) }
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.sideEffect.collect { effect ->
-            when (effect) {
-                is RegisterSideEffect.ShowToast -> context.toast(effect.messageRes)
-                RegisterSideEffect.NavigateToLogin -> navigateToLogin()
-            }
+    ObserveAsEvents(viewModel.sideEffect) { effect ->
+        when (effect) {
+            is RegisterSideEffect.ShowToast -> context.toast(effect.messageRes)
+            RegisterSideEffect.NavigateToLogin -> navigateToLogin()
         }
     }
 
