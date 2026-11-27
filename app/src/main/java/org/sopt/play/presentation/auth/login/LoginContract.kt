@@ -6,6 +6,7 @@ import org.sopt.play.presentation.auth.util.AuthValidator
 data class LoginState(
     val email: String = "",
     val password: String = "",
+    val isLoggingIn: Boolean = false,
 ) {
     @get:StringRes
     val emailError: Int?
@@ -16,7 +17,9 @@ data class LoginState(
         get() = AuthValidator.passwordError(password)
 
     val loginEnabled: Boolean
-        get() = AuthValidator.isValidEmail(email) && AuthValidator.isValidPassword(password)
+        get() = AuthValidator.isValidEmail(email) &&
+            AuthValidator.isValidPassword(password) &&
+            !isLoggingIn
 }
 
 sealed interface LoginIntent {

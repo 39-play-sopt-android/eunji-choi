@@ -39,11 +39,11 @@ class PostViewModel @Inject constructor(
 
     private val searchClicks = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
 
-    private var submitJob: Job? = null
+    private var loadJob: Job? = null
 
     init {
-        loadPosts()
-        observeKeyword()
+        loadPosts(keyword = null)
+        observeSearch()
     }
 
     fun onIntent(intent: PostIntent) {
@@ -51,52 +51,67 @@ class PostViewModel @Inject constructor(
             is PostIntent.KeywordChanged -> changeKeyword(intent.keyword)
             is PostIntent.TitleChanged -> changeTitle(intent.title)
             is PostIntent.ContentChanged -> changeContent(intent.content)
-            is PostIntent.CreateClicked -> create()
+
+            PostIntent.SearchClicked -> onSearchClick()
+            PostIntent.LoadMore -> loadMorePosts()
+
+            PostIntent.CreateSheetOpened -> openCreateSheet()
+            PostIntent.CreateSheetDismissed -> closeCreateSheet()
+            PostIntent.CreateClicked -> create()
+
             is PostIntent.EditStarted -> startEdit(intent.id)
-            is PostIntent.EditDismissed -> endEdit()
-            is PostIntent.EditClicked -> edit()
-            is PostIntent.DeleteClicked -> delete(intent.id)
-            is PostIntent.SearchClicked -> onSearchClick()
-            is PostIntent.LoadMore -> loadMorePosts()
+            PostIntent.EditDismissed -> dismissEdit()
+            PostIntent.EditClicked -> edit()
+
+            is PostIntent.DeleteRequested -> requestDelete(intent.id)
+            PostIntent.DeleteDismissed -> dismissDelete()
+            PostIntent.DeleteConfirmed -> delete()
         }
     }
 
-    private fun loadPosts(keyword: String? = null) {
-        viewModelScope.launch {
-            _state.update { it.copy(isLoading = true) }
+    private fun loadPosts(keyword: String?) {
+        val searchKeyword = keyword?.trim()?.ifBlank { null }
+
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, isLoadingMore = false) }
 
             postRepository.getPosts(
-                keyword = keyword?.trim()?.ifBlank { null },
-                cursor = null
+                keyword = searchKeyword,
+                cursor = null,
             )
                 .onSuccess { result ->
-                    _state.update { it.copy(
-                        posts = result.posts.map { post ->
-                            post.toUiModel()
-                        },
-                        nextCursor = result.nextCursor,
-                        hasNext = result.hasNext,
-                        isLoading = false,
-                    )
+                    _state.update {
+                        it.copy(
+                            posts = result.posts.map { post -> post.toUiModel() },
+                            searchedKeyword = searchKeyword,
+                            nextCursor = result.nextCursor,
+                            hasNext = result.hasNext,
+                            isLoading = false,
+                            isLoadFailed = false,
+                        )
                     }
                 }
                 .onFailure {
-            _state.update { it.copy(isLoading = false) }
-            _sideEffect.send(PostSideEffect.ShowToast(R.string.post_load_failure))
+                    _state.update { it.copy(isLoading = false, isLoadFailed = true) }
+                    _sideEffect.send(PostSideEffect.ShowToast(R.string.post_load_failure))
+                }
         }
-        }
+    }
+
+    private fun refreshPosts() {
+        loadPosts(keyword = _state.value.searchedKeyword)
     }
 
     private fun loadMorePosts() {
         val state = _state.value
-
         if (!state.hasNext || state.isLoadingMore || state.isLoading) return
 
-        viewModelScope.launch {
+        loadJob = viewModelScope.launch {
             _state.update { it.copy(isLoadingMore = true) }
 
             postRepository.getPosts(
-                keyword = state.keyword.trim().ifBlank { null },
+                keyword = state.searchedKeyword,
                 cursor = state.nextCursor,
             )
                 .onSuccess { result ->
@@ -117,37 +132,46 @@ class PostViewModel @Inject constructor(
     }
 
     private fun changeKeyword(keyword: String) {
-        _state.update { state ->
-            state.copy(keyword = keyword)
-        }
+        _state.update { it.copy(keyword = keyword) }
     }
 
     private fun changeTitle(title: String) {
-        _state.update { state ->
-            state.copy(title = title)
-        }
+        _state.update { it.copy(title = title) }
     }
 
     private fun changeContent(content: String) {
-        _state.update { state ->
-            state.copy(content = content)
-        }
+        _state.update { it.copy(content = content) }
+    }
+
+    private fun openCreateSheet() {
+        _state.update { it.copy(isCreateSheetVisible = true) }
+    }
+
+    private fun closeCreateSheet() {
+        _state.update { it.copy(isCreateSheetVisible = false) }
     }
 
     private fun create() {
-        if (submitJob?.isActive == true) return
-
         val state = _state.value
-        submitJob = viewModelScope.launch {
+        if (state.isSubmitting) return
+        _state.update { it.copy(isSubmitting = true) }
+
+        viewModelScope.launch {
             postRepository.createPost(
                 title = state.title,
                 content = state.content,
                 author = authRepository.getUserName(),
             )
-                .onSuccess { loadPosts(keyword = _state.value.keyword) }
+                .onSuccess {
+                    _state.update { it.copy(isCreateSheetVisible = false) }
+                    _sideEffect.send(PostSideEffect.ClearInputs)
+                    refreshPosts()
+                }
                 .onFailure {
                     _sideEffect.send(PostSideEffect.ShowToast(R.string.post_create_failure))
                 }
+
+            _state.update { it.copy(isSubmitting = false) }
         }
     }
 
@@ -157,39 +181,56 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    private fun endEdit() {
+    private fun dismissEdit() {
         _state.update { it.copy(editingPost = null) }
+        viewModelScope.launch { _sideEffect.send(PostSideEffect.ClearInputs) }
     }
 
     private fun edit() {
-        if (submitJob?.isActive == true) return
-
         val state = _state.value
+        if (state.isSubmitting) return
         val post = state.editingPost ?: return
-        endEdit()
+        _state.update { it.copy(isSubmitting = true) }
 
-        submitJob = viewModelScope.launch {
+        viewModelScope.launch {
             postRepository.editPost(
                 postId = post.id,
                 title = state.title,
                 content = state.content,
             )
-                .onSuccess { loadPosts(keyword = state.keyword) }
+                .onSuccess {
+                    _state.update { it.copy(editingPost = null) }
+                    _sideEffect.send(PostSideEffect.ClearInputs)
+                    refreshPosts()
+                }
                 .onFailure { _sideEffect.send(PostSideEffect.ShowToast(R.string.post_edit_failure)) }
+
+            _state.update { it.copy(isSubmitting = false) }
         }
     }
 
-    private fun delete(id: Long) {
-        if (submitJob?.isActive == true) return
+    private fun requestDelete(id: Long) {
+        _state.update { it.copy(deletingPostId = id) }
+    }
 
-        submitJob = viewModelScope.launch {
-            postRepository.deletePost(
-                postId = id
-            )
-                .onSuccess { loadPosts(keyword = _state.value.keyword) }
+    private fun dismissDelete() {
+        _state.update { it.copy(deletingPostId = null) }
+    }
+
+    private fun delete() {
+        val state = _state.value
+        if (state.isSubmitting) return
+        val postId = state.deletingPostId ?: return
+        _state.update { it.copy(isSubmitting = true) }
+
+        viewModelScope.launch {
+            postRepository.deletePost(postId = postId)
+                .onSuccess { refreshPosts() }
                 .onFailure {
                     _sideEffect.send(PostSideEffect.ShowToast(R.string.post_delete_failure))
                 }
+
+            _state.update { it.copy(deletingPostId = null, isSubmitting = false) }
         }
     }
 
@@ -204,12 +245,12 @@ class PostViewModel @Inject constructor(
     }
 
     @OptIn(FlowPreview::class)
-    private fun observeKeyword() {
+    private fun observeSearch() {
         val typed = _state
             .map { it.keyword }
             .distinctUntilChanged()
             .drop(1)
-            .debounce(300)
+            .debounce(SEARCH_DEBOUNCE_MILLIS)
 
         val clicked = searchClicks.map { _state.value.keyword }
 
@@ -224,5 +265,6 @@ class PostViewModel @Inject constructor(
 
     companion object {
         private const val MIN_KEYWORD_LENGTH = 2
+        private const val SEARCH_DEBOUNCE_MILLIS = 300L
     }
 }

@@ -26,9 +26,9 @@ fun PostCard(
     content: String,
     author: String,
     createdAt: String,
-    modifier: Modifier = Modifier,
-    onShortClick: () -> Unit,
+    onClick: () -> Unit,
     onLongClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
@@ -37,7 +37,7 @@ fun PostCard(
             .background(color = PlaySoptTheme.colors.gray1)
             .noRippleCombinedClickable(
                 onLongClick = onLongClick,
-                onClick = onShortClick,
+                onClick = onClick,
             )
             .padding(20.dp),
     ) {
@@ -97,8 +97,8 @@ private fun PostCardListPreview() {
                 content = "안드로이드 파트에서 함께 성장할 YB, OB를 모집합니다. 많은 관심 부탁드려요!",
                 author = "솝트",
                 createdAt = "2026.11.25",
+                onClick = {},
                 onLongClick = {},
-                onShortClick = {}
             )
         }
     }

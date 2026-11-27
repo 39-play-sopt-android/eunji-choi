@@ -2,6 +2,7 @@ package org.sopt.play.presentation.post
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,6 +13,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import org.sopt.play.core.common.extension.ObserveAsEvents
 import org.sopt.play.core.common.extension.toast
 
 private const val LOAD_MORE_THRESHOLD = 3
@@ -27,13 +29,14 @@ fun PostRoute(
     val keywordState = rememberTextFieldState()
     val titleState = rememberTextFieldState()
     val contentState = rememberTextFieldState()
-
     val listState = rememberLazyListState()
 
-    LaunchedEffect(Unit) {
-        viewModel.sideEffect.collect { effect ->
-            when (effect) {
-                is PostSideEffect.ShowToast -> context.toast(effect.messageRes)
+    ObserveAsEvents(viewModel.sideEffect) { effect ->
+        when (effect) {
+            is PostSideEffect.ShowToast -> context.toast(effect.messageRes)
+            PostSideEffect.ClearInputs -> {
+                titleState.clearText()
+                contentState.clearText()
             }
         }
     }
@@ -66,21 +69,21 @@ fun PostRoute(
     }
 
     PostScreen(
+        state = state,
         paddingValues = paddingValues,
         listState = listState,
         keywordState = keywordState,
         titleState = titleState,
         contentState = contentState,
-        completeEnabled = state.completeEnabled,
-        isLoading = state.isLoading,
-        posts = state.posts,
         onSearchClick = { viewModel.onIntent(PostIntent.SearchClicked) },
+        onCreateSheetOpen = { viewModel.onIntent(PostIntent.CreateSheetOpened) },
+        onCreateSheetDismiss = { viewModel.onIntent(PostIntent.CreateSheetDismissed) },
         onCreateClick = { viewModel.onIntent(PostIntent.CreateClicked) },
-        editingPost = state.editingPost,
-        editCompleteEnabled = state.editCompleteEnabled,
         onEditStart = { id -> viewModel.onIntent(PostIntent.EditStarted(id)) },
         onEditDismiss = { viewModel.onIntent(PostIntent.EditDismissed) },
         onEditClick = { viewModel.onIntent(PostIntent.EditClicked) },
-        onDeleteClick = { id -> viewModel.onIntent(PostIntent.DeleteClicked(id)) }
+        onDeleteRequest = { id -> viewModel.onIntent(PostIntent.DeleteRequested(id)) },
+        onDeleteDismiss = { viewModel.onIntent(PostIntent.DeleteDismissed) },
+        onDeleteConfirm = { viewModel.onIntent(PostIntent.DeleteConfirmed) },
     )
 }

@@ -20,6 +20,7 @@ import org.sopt.play.core.designsystem.component.button.PlayButton
 import org.sopt.play.core.designsystem.component.model.PlayButtonType
 import org.sopt.play.core.designsystem.component.textfield.PlayTextField
 import org.sopt.play.core.designsystem.theme.PlaySoptTheme
+import org.sopt.play.presentation.post.model.PostPolicy
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,7 +60,7 @@ private fun PostBottomSheetContent(
             label = stringResource(R.string.post_title_label),
             state = titleState,
             placeholder = stringResource(R.string.post_title_placeholder),
-            maxLength = 20,
+            maxLength = PostPolicy.TITLE_MAX_LENGTH,
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -68,7 +69,7 @@ private fun PostBottomSheetContent(
             label = stringResource(R.string.post_content_label),
             state = contentState,
             placeholder = stringResource(R.string.post_content_placeholder),
-            maxLength = 1000,
+            maxLength = PostPolicy.CONTENT_MAX_LENGTH,
         )
 
         Spacer(modifier = Modifier.height(20.dp))

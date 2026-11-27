@@ -4,19 +4,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,39 +23,36 @@ import org.sopt.play.presentation.post.component.PostEmptyContent
 import org.sopt.play.presentation.post.component.PostFloatingButton
 import org.sopt.play.presentation.post.component.PostModal
 import org.sopt.play.presentation.post.component.PostSearchTextField
-import org.sopt.play.presentation.post.model.PostCardUiModel
 
 @Composable
 fun PostScreen(
+    state: PostState,
     paddingValues: PaddingValues,
     listState: LazyListState,
     keywordState: TextFieldState,
     titleState: TextFieldState,
     contentState: TextFieldState,
-    completeEnabled: Boolean,
-    editingPost: PostCardUiModel?,
-    editCompleteEnabled: Boolean,
-    isLoading: Boolean,
-    posts: List<PostCardUiModel>,
     onSearchClick: () -> Unit,
+    onCreateSheetOpen: () -> Unit,
+    onCreateSheetDismiss: () -> Unit,
     onCreateClick: () -> Unit,
     onEditStart: (Long) -> Unit,
     onEditDismiss: () -> Unit,
     onEditClick: () -> Unit,
-    onDeleteClick: (Long) -> Unit,
+    onDeleteRequest: (Long) -> Unit,
+    onDeleteDismiss: () -> Unit,
+    onDeleteConfirm: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var showCreatePostBottomSheet by remember { mutableStateOf(false) }
-    var deletePostId by remember { mutableStateOf<Long?>(null) }
-
     Box(
         modifier = modifier
-            .padding(paddingValues)
+            .fillMaxSize()
+            .padding(paddingValues),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp),
         ) {
             PostSearchTextField(
                 state = keywordState,
@@ -69,9 +62,10 @@ fun PostScreen(
                     .padding(vertical = 12.dp),
             )
 
-            if (posts.isEmpty() && !isLoading) {
+            if (state.showEmpty) {
                 PostEmptyContent(
-                    modifier = Modifier.weight(1f)
+                    messageRes = state.emptyMessageRes,
+                    modifier = Modifier.weight(1f),
                 )
             } else {
                 LazyColumn(
@@ -80,18 +74,18 @@ fun PostScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     contentPadding = PaddingValues(bottom = 152.dp),
                 ) {
-                    items(posts, key = { it.id }) {
+                    items(state.posts, key = { it.id }) { post ->
                         PostCard(
-                            title = it.title,
-                            content = it.content,
-                            author = it.author,
-                            createdAt = it.createdAt,
-                            onShortClick = {
-                                titleState.setTextAndPlaceCursorAtEnd(it.title)
-                                contentState.setTextAndPlaceCursorAtEnd(it.content)
-                                onEditStart(it.id)
+                            title = post.title,
+                            content = post.content,
+                            author = post.author,
+                            createdAt = post.createdAt,
+                            onClick = {
+                                titleState.setTextAndPlaceCursorAtEnd(post.title)
+                                contentState.setTextAndPlaceCursorAtEnd(post.content)
+                                onEditStart(post.id)
                             },
-                            onLongClick = { deletePostId = it.id }
+                            onLongClick = { onDeleteRequest(post.id) },
                         )
                     }
                 }
@@ -99,58 +93,39 @@ fun PostScreen(
         }
 
         PostFloatingButton(
-            onClick = { showCreatePostBottomSheet = true },
+            onClick = onCreateSheetOpen,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(end = 16.dp, bottom = 20.dp),
         )
     }
 
-    if (showCreatePostBottomSheet) {
+    if (state.isCreateSheetVisible) {
         PostBottomSheet(
             titleState = titleState,
             contentState = contentState,
-            completeEnabled = completeEnabled,
-            onDismiss = { showCreatePostBottomSheet = false },
-            onCompleteClick = {
-                onCreateClick()
-                titleState.clearText()
-                contentState.clearText()
-                showCreatePostBottomSheet = false
-            },
+            completeEnabled = state.completeEnabled,
+            onDismiss = onCreateSheetDismiss,
+            onCompleteClick = onCreateClick,
         )
     }
 
-    editingPost?.let {
+    if (state.editingPost != null) {
         PostBottomSheet(
             titleState = titleState,
             contentState = contentState,
-            completeEnabled = editCompleteEnabled,
-            onDismiss = {
-                titleState.clearText()
-                contentState.clearText()
-                onEditDismiss()
-            },
-            onCompleteClick = {
-                onEditClick()
-                titleState.clearText()
-                contentState.clearText()
-            },
+            completeEnabled = state.editCompleteEnabled,
+            onDismiss = onEditDismiss,
+            onCompleteClick = onEditClick,
         )
     }
 
-    deletePostId?.let { postId ->
-        Dialog(onDismissRequest = { deletePostId = null }) {
+    if (state.deletingPostId != null) {
+        Dialog(onDismissRequest = onDeleteDismiss) {
             PostModal(
-                onCancelClick = {
-                    deletePostId = null
-                },
-                onDeleteClick = {
-                    onDeleteClick(postId)
-                    deletePostId = null
-                },
+                onCancelClick = onDeleteDismiss,
+                onDeleteClick = onDeleteConfirm,
             )
         }
     }
 }
-

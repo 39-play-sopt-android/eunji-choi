@@ -15,5 +15,7 @@ fun PostModel.toUiModel(): PostCardUiModel = PostCardUiModel(
     title = title,
     content = content,
     author = author,
-    createdAt = createdAt,
+    createdAt = createdAt.toDisplayDate(),
 )
+
+private fun String.toDisplayDate(): String = take(10).replace("-", ".")

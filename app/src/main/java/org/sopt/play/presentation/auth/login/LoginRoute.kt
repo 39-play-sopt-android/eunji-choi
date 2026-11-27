@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.sopt.play.core.common.extension.ObserveAsEvents
 import org.sopt.play.core.common.extension.toast
 
 @Composable
@@ -39,12 +40,10 @@ fun LoginRoute(
             .collect { viewModel.onIntent(LoginIntent.PasswordChanged(it)) }
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.sideEffect.collect { effect ->
-            when (effect) {
-                is LoginSideEffect.ShowToast -> context.toast(effect.messageRes)
-                LoginSideEffect.NavigateToHome -> navigateToHome()
-            }
+    ObserveAsEvents(viewModel.sideEffect) { effect ->
+        when (effect) {
+            is LoginSideEffect.ShowToast -> context.toast(effect.messageRes)
+            LoginSideEffect.NavigateToHome -> navigateToHome()
         }
     }
 

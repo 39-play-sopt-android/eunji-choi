@@ -35,6 +35,8 @@ class LoginViewModel @Inject constructor(
 
     private fun login() {
         val state = _state.value
+        if (state.isLoggingIn) return
+        _state.update { it.copy(isLoggingIn = true) }
 
         viewModelScope.launch {
             authRepository.login(state.email, state.password)
@@ -51,6 +53,8 @@ class LoginViewModel @Inject constructor(
                     }
                     _sideEffect.send(LoginSideEffect.ShowToast(message))
                 }
+
+            _state.update { it.copy(isLoggingIn = false) }
         }
     }
 

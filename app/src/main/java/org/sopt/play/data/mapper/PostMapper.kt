@@ -16,7 +16,5 @@ fun PostResponse.toModel(): PostModel = PostModel(
     title = title,
     content = content,
     author = author,
-    createdAt = createdAt.toDisplayDate(),
+    createdAt = createdAt,
 )
-
-private fun String.toDisplayDate(): String = take(10).replace("-", ".")
